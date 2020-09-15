@@ -3,11 +3,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // named import
-import { HelloWorld } from './components/HelloWorld';
+import { ColorTool } from './components/ColorTool';
+import { CarTool } from './components/CarTool';
 
 ReactDOM.render(
-  // React.createElement(HelloWorld),
-  <HelloWorld />,
+  <>
+    <ColorTool />
+    <CarTool />
+  </>,
   document.querySelector('#root'),
 );
 
