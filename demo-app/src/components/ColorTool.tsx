@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, ChangeEvent } from 'react';
 
 import { Color } from '../models/Color';
 
@@ -7,6 +7,29 @@ export type ColorToolProps = {
 };
 
 export function ColorTool(props: ColorToolProps) {
+
+  // useState hook returns an array, 2 items: state data, state update function (updates the state, and triggers the re-render)
+
+  // array destructuring
+  // colorForm will be a local variable which the state data will be assigned to
+  // setColorForm will be a local variable which the update function will be assigned it
+  const [ colorForm, setColorForm ] = useState({
+    colorName: '', colorHexcode: '',
+  } /* initial value used to initialize the state on the first render */);
+
+  const change = (e: ChangeEvent<HTMLInputElement>) => {
+
+    setColorForm({
+      ...colorForm, // object spread operation copies the properties from the original color form, into the new object
+
+      // computed property - the expression in the square braces will be evaluated and the result
+      // will be the name of the property which is updated
+      [ e.target.name ]: e.target.value,
+    });
+
+  };
+
+  console.log(colorForm);
 
   return (
     <>
@@ -18,6 +41,21 @@ export function ColorTool(props: ColorToolProps) {
           color => <li key={color.id}>{color.name}</li>
         )}
       </ul>
+      <form>
+        <div>
+          <label>
+            Color Name
+            <input type="text" name="colorName" value={colorForm.colorName} onChange={change} />
+          </label>
+        </div>
+        <div>
+          <label>
+            Color Hexcode
+            <input type="text" name="colorHexcode" value={colorForm.colorHexcode} onChange={change} />
+          </label>
+        </div>
+        <button type="button">Add Color</button>
+      </form>
     </>
   );
 }
