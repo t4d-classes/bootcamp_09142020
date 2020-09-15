@@ -2,13 +2,11 @@ import React from 'react';
 
 import { Color } from '../models/Color';
 
-export function ColorTool() {
+export type ColorToolProps = {
+  colors: Color[],
+};
 
-  const colors: Color[] = [
-    { id: 1, name: 'red', hexcode: 'ff0000' },
-    { id: 2, name: 'green', hexcode: '00ff00' },
-    { id: 3, name: 'blue', hexcode: '0000ff' },
-  ];
+export function ColorTool(props: ColorToolProps) {
 
   return (
     <>
@@ -16,7 +14,7 @@ export function ColorTool() {
         <h1>Color Tool</h1>
       </header>
       <ul>
-        {colors.map(
+        {props.colors.map(
           color => <li key={color.id}>{color.name}</li>
         )}
       </ul>
