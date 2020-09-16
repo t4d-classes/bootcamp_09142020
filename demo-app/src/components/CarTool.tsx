@@ -45,10 +45,16 @@ export function CarTool(props: CarToolProps) {
 
   };
 
+  const deleteCar = (carId: number) => {
+
+    setCars(cars.filter(c => c.id !== carId));
+
+  };
+
   return (
     <>
       <ToolHeader headerText="Car Tool" />
-      <CarTable cars={cars} />
+      <CarTable cars={cars} onDeleteCar={deleteCar} />
       <form>
         <label>
           Make
