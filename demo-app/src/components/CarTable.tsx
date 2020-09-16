@@ -9,7 +9,7 @@ export type CarTableProps = {
   onDeleteCar: (carId: number) => void,
 };
 
-export function CarTable(props: CarTableProps) {
+export function CarTable({ cars, onDeleteCar: handleDeleteCar }: CarTableProps) {
 
   return (
     <table>
@@ -25,9 +25,9 @@ export function CarTable(props: CarTableProps) {
         </tr>
       </thead>
       <tbody>
-        {props.cars.map(car =>
+        {cars.map(car =>
           <CarViewRow key={car.id} car={car}
-            onDeleteCar={props.onDeleteCar} />)}
+            onDeleteCar={handleDeleteCar} />)}
       </tbody>
     </table>
   );
