@@ -11,6 +11,8 @@ export type CarTableProps = {
   carsSort: CarsSort,
   onEditCar: (carId: number) => void,
   onDeleteCar: (carId: number) => void,
+  onSaveCar: (car: Car) => void,
+  onCancelCar: () => void,
   // onSortCars: (col: string) => void,
   onSortCars: (col: keyof Car) => void,
 };
@@ -41,7 +43,9 @@ function ColHeader(props: ColHeaderProps) {
 export function CarTable({
   cars, editCarId, carsSort,
   onEditCar: editCar,
-  onDeleteCar: handleDeleteCar,
+  onDeleteCar: deleteCar,
+  onSaveCar: saveCar,
+  onCancelCar: cancelCar,
   onSortCars: sortCars,
 }: CarTableProps) {
 
@@ -60,8 +64,8 @@ export function CarTable({
       </thead>
       <tbody>
         {cars.map(car => car.id === editCarId
-          ? <CarEditRow key={car.id} car={car} onSaveCar={() => null} onCancelCar={() => null} />
-          : <CarViewRow key={car.id} car={car} onEditCar={editCar} onDeleteCar={handleDeleteCar} />)}
+          ? <CarEditRow key={car.id} car={car} onSaveCar={saveCar} onCancelCar={cancelCar} />
+          : <CarViewRow key={car.id} car={car} onEditCar={editCar} onDeleteCar={deleteCar} />)}
       </tbody>
     </table>
   );
