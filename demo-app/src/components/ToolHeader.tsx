@@ -6,6 +6,8 @@ export type ToolHeaderProps = {
 
 export function ToolHeader(props: ToolHeaderProps) {
 
+  console.log('rendering tool header');
+
   return (
     <header>
       <h1>{props.headerText}</h1>

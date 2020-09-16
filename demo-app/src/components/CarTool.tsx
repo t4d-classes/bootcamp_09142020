@@ -8,10 +8,18 @@ export type CarToolProps = {
   cars: Car[],
 };
 
+type CarForm = {
+  make: string;
+  model: string;
+  year: number;
+  color: string;
+  price: number;
+}
+
 export function CarTool(props: CarToolProps) {
 
   const [ cars, setCars ] = useState(props.cars.concat());
-  const [ carForm, setCarForm ] = useState({
+  const [ carForm, setCarForm ] = useState<CarForm>({
     make: '', model: '', year: 1900, color: '', price: 0,
   });
 
