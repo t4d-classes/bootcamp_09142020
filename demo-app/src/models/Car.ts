@@ -5,4 +5,5 @@ export type Car = {
   year: number,
   color: string,
   price: number,
+  // [x:string]: any,
 }
