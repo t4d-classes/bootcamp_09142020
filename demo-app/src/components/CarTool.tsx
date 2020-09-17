@@ -19,12 +19,12 @@ export function CarTool(props: CarToolProps) {
     dir: 'asc',
   });
   const [ editCarId, setEditCarId ] = useState(-1);
-  const [ cars, appendCar, replaceCar, removeCar ] = useList<Car, CarFormData>([ ...props.cars ]);
+  const [ cars, appendCar, replaceCar, removeCar ] = useList<Car>([ ...props.cars ]);
 
   const addCar = (carForm: CarFormData) => {
-    appendCar(carForm as Car);
+    // appendCar(carForm as Car);
     // appendCar({ id: -1, ...carForm });
-    // appendCar(carForm);
+    appendCar(carForm);
     setEditCarId(-1);
   };
 

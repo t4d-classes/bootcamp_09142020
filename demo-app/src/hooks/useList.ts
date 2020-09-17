@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import { Item, ItemId } from '../models/Item';
 
-type AppendItem<S> = (item: S) => void;
+type AppendItem<S> = (item: Omit<S, 'id'>) => void;
 type ReplaceItem<S> = (item: S) => void;
 type RemoveItem = (itemId: ItemId) => void;
 
-type UseList = <ItemType extends Item, NewItemType>(initialItems: ItemType[]) =>
+type UseList = <ItemType extends Item>(initialItems: ItemType[]) =>
   ([
     ItemType[],
     AppendItem<ItemType>,
@@ -28,7 +28,7 @@ export const useList: UseList = <ItemType extends Item>(initialItems: ItemType[]
       {
         ...item,
         id: Math.max(...items.map(i => i.id), 0) + 1,
-      },
+      } as ItemType,
     ]);
   };
 
