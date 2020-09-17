@@ -1,6 +1,7 @@
-import React, { useState, ChangeEvent } from 'react';
+import React from 'react';
 
 import { nanToString } from '../utils';
+import { useForm } from '../hooks/useForm';
 
 export type CarFormData = {
   make: string;
@@ -17,33 +18,17 @@ export type CarFormProps = {
 
 export function CarForm(props: CarFormProps) {
 
-  const [ carForm, setCarForm ] = useState<CarFormData>({
+  const [ carForm, change, resetCarForm ] = useForm({
     make: '', model: '', year: 1900, color: '', price: 0,
   });
-
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
-
-    setCarForm({
-      ...carForm,
-      [ e.target.name ]: e.target.type === 'number'
-        ? e.target.valueAsNumber : e.target.value,
-    });
-
-  };
-
-  console.log(carForm);
 
   const submitCar = () => {
 
     props.onSubmitCar({
       ...carForm,
-      // year: isNaN(carForm.year) ? 0 : carForm.year,
-      // price: isNaN(carForm.price) ? 0 : carForm.price,
     });
 
-    setCarForm({
-      make: '', model: '', year: 1900, color: '', price: 0,
-    });
+    resetCarForm();
   };
 
   return (

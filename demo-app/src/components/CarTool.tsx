@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
 import { Car, CarKeys } from '../models/Car';
+
+import { useCarList } from '../hooks/useCarList';
+
 import { ToolHeader } from './ToolHeader';
 import { CarTable, CarsSort } from './CarTable';
 import { CarForm, CarFormData } from './CarForm';
@@ -11,34 +14,25 @@ export type CarToolProps = {
 
 export function CarTool(props: CarToolProps) {
 
-  const [ cars, setCars ] = useState(props.cars.concat());
   const [ carsSort, setCarsSort ] = useState<CarsSort>({
     col: 'id',
     dir: 'asc',
   });
   const [ editCarId, setEditCarId ] = useState(-1);
+  const [ cars, appendCar, replaceCar, removeCar ] = useCarList(props.cars.concat());
 
   const addCar = (carForm: CarFormData) => {
-
-    setCars(cars.concat({
-      ...carForm,
-      id: Math.max(...cars.map(c => c.id), 0) + 1,
-    }));
+    appendCar(carForm);
     setEditCarId(-1);
   };
 
   const saveCar = (car: Car) => {
-    const carIndex = cars.findIndex(c => c.id === car.id);
-    if (carIndex >= 0) {
-      const newCars = cars.concat();
-      newCars[carIndex] = car;
-      setCars(newCars);
-    }
+    replaceCar(car);
     setEditCarId(-1);
   };
 
   const deleteCar = (carId: number) => {
-    setCars(cars.filter(c => c.id !== carId));
+    removeCar(carId);
     setEditCarId(-1);
   };
 
