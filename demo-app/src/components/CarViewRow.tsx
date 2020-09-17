@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Car } from '../models/Car';
+import { nanToString } from '../utils';
 
 export type CarViewRowProps = {
   car: Car,
@@ -15,9 +16,9 @@ export function CarViewRow(props: CarViewRowProps) {
       <td>{props.car.id}</td>
       <td>{props.car.make}</td>
       <td>{props.car.model}</td>
-      <td>{props.car.year}</td>
+      <td>{nanToString(props.car.year)}</td>
       <td>{props.car.color}</td>
-      <td>{props.car.price}</td>
+      <td>{nanToString(props.car.price)}</td>
       <td>
         <button type="button"
           onClick={() => props.onEditCar(props.car.id)}>Edit</button>

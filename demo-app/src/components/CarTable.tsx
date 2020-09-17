@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Car } from '../models/Car';
+import { Car, CarKeys } from '../models/Car';
 
 import { CarEditRow } from './CarEditRow';
 import { CarViewRow } from './CarViewRow';
@@ -14,10 +14,13 @@ export type CarTableProps = {
   onSaveCar: (car: Car) => void,
   onCancelCar: () => void,
   // onSortCars: (col: string) => void,
+  // onSortCars: (col: CarKeys) => void,
   onSortCars: (col: keyof Car) => void,
 };
 
 export type CarsSort = {
+  // col: string,
+  // col: CarKeys,
   col: keyof Car,
   dir: string,
 }
@@ -25,9 +28,11 @@ export type CarsSort = {
 type ColHeaderProps = {
   carsSort: CarsSort,
   // col: string,
+  // col: CarKeys,
   col: keyof Car,
   caption: string,
   // onClick: (col: string) => void,
+  // onClick: (col: CarKeys) => void,
   onClick: (col: keyof Car) => void,
 }
 

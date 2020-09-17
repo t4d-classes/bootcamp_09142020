@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 
-import { Car } from '../models/Car';
+import { Car, CarKeys } from '../models/Car';
 import { ToolHeader } from './ToolHeader';
 import { CarTable, CarsSort } from './CarTable';
 import { CarForm, CarFormData } from './CarForm';
@@ -47,6 +47,7 @@ export function CarTool(props: CarToolProps) {
   };
 
   // const sortCars = (col: string) => {
+  // const sortCars = (col: CarKeys) => {
   const sortCars = (col: keyof Car) => {
 
     if (col === carsSort.col) {

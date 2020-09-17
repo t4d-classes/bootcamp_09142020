@@ -5,5 +5,7 @@ export type Car = {
   year: number,
   color: string,
   price: number,
-  // [x:string]: any,
+  // [ x:string ]: any,
 }
+
+export type CarKeys = 'id' | 'make' | 'model' | 'year' | 'color' | 'price';

@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 
+import { nanToString } from '../utils';
+
 export type CarFormData = {
   make: string;
   model: string;
@@ -23,14 +25,21 @@ export function CarForm(props: CarFormProps) {
 
     setCarForm({
       ...carForm,
-      [ e.target.name ]: e.target.value,
+      [ e.target.name ]: e.target.type === 'number'
+        ? e.target.valueAsNumber : e.target.value,
     });
 
   };
 
+  console.log(carForm);
+
   const submitCar = () => {
 
-    props.onSubmitCar(carForm);
+    props.onSubmitCar({
+      ...carForm,
+      // year: isNaN(carForm.year) ? 0 : carForm.year,
+      // price: isNaN(carForm.price) ? 0 : carForm.price,
+    });
 
     setCarForm({
       make: '', model: '', year: 1900, color: '', price: 0,
@@ -52,7 +61,7 @@ export function CarForm(props: CarFormProps) {
       <label>
         Year
         <input type="number" name="year"
-               value={carForm.year} onChange={change} />
+               value={nanToString(carForm.year)} onChange={change} />
       </label>
       <label>
         Color
@@ -61,8 +70,8 @@ export function CarForm(props: CarFormProps) {
       </label>
       <label>
         Price
-        <input type="text" name="price"
-               value={carForm.price} onChange={change} />
+        <input type="number" name="price"
+               value={nanToString(carForm.price)} onChange={change} />
       </label>
       <button type="button" onClick={submitCar}>{props.buttonText}</button>
     </form>
