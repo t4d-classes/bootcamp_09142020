@@ -25,7 +25,26 @@ const sortedCars = (cars: Car[], carsSort: CarsSort) => {
   });
 }
 
-export const useCarToolStore = (initialCars: Car[]) => {
+type CarToolState = {
+  sortedCars: Car[],
+  editCarId: number,
+  carsSort: CarsSort,
+}
+
+type CarToolActions = {
+  addCar: (carForm: CarFormData) => void,
+  saveCar: (car: Car) => void,
+  deleteCar: (carId: number) => void,
+  editCar: (carId: number) => void,
+  cancelCar: () => void,
+  sortCars: (col: keyof Car) => void,
+}
+
+type CarToolStore = CarToolState & CarToolActions;
+
+type UseCarToolStore = (initialCars: Car[]) => CarToolStore;
+
+export const useCarToolStore: UseCarToolStore = (initialCars) => {
 
   const [ carsSort, setCarsSort ] = useState<CarsSort>({
     col: 'id',
