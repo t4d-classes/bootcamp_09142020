@@ -20,9 +20,6 @@ export const useList: UseList = <ItemType extends Item>(initialItems: ItemType[]
 
   const addItem: AppendItem<ItemType> = (item) => {
 
-    // TODO: add support for string based ids
-    // I am assuming, that is the item has a numeric id then the list uses number ids
-
     setItems([
       ...items,
       {

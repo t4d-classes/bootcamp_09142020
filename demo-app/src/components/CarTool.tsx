@@ -22,8 +22,6 @@ export function CarTool(props: CarToolProps) {
   const [ cars, appendCar, replaceCar, removeCar ] = useList<Car>([ ...props.cars ]);
 
   const addCar = (carForm: CarFormData) => {
-    // appendCar(carForm as Car);
-    // appendCar({ id: -1, ...carForm });
     appendCar(carForm);
     setEditCarId(-1);
   };
