@@ -1,31 +1,82 @@
-// default imports
-import React from 'react';
+import React ,{ useState } from 'react';
 import ReactDOM from 'react-dom';
+import { Action, Reducer, createStore } from 'redux';
 
-import { Color } from './models/Color';
-import { Car } from './models/Car';
+const ADD_ACTION = 'ADD';
+const SUBTRACT_ACTION = 'SUBTRACT';
 
-import { ColorTool } from './components/ColorTool';
+export interface CalcOpAction extends Action {
+  payload: {
+    num: number,
+  },
+}
 
-import { CarToolStoreProvider } from './contexts/carToolContext';
-import { CarTool } from './components/CarTool';
+export type CalcOpActionCreator = (num: number) => CalcOpAction;
 
-import './index.css';
+export const createAddAction: CalcOpActionCreator = (num) => ({
+  type: ADD_ACTION,
+  payload: {
+    num,
+  }
+});
 
-const colorList: Color[] = [
-  { id: 1, name: 'red', hexcode: 'ff0000' },
-  { id: 2, name: 'green', hexcode: '00ff00' },
-  { id: 3, name: 'blue', hexcode: '0000ff' },
-];
+export const createSubtractAction: CalcOpActionCreator = (num) => ({
+  type: SUBTRACT_ACTION,
+  payload: {
+    num,
+  }
+});
 
-ReactDOM.render(
-  <>
-    {/* React.createElement(ColorTool, { colors: colorList }) */}
-    <ColorTool colors={colorList}  />
-    <CarToolStoreProvider>
-      <CarTool />
-    </CarToolStoreProvider>
-  </>,
-  document.querySelector('#root'),
-);
+// state data
+export type CalcToolState = {
+  result: number,
+};
+
+// stateful logic
+// newState <- reducer(currentState, action)
+export const calcToolReducer: Reducer<CalcToolState, CalcOpAction> = (state = { result: 0 }, action) => {
+
+  switch (action.type) {
+    case ADD_ACTION:
+      return {
+        ...state,
+        result: state.result + action.payload.num,
+      };
+    case SUBTRACT_ACTION:
+      return {
+        ...state,
+        result: state.result - action.payload.num,
+      };
+    default:
+      return state;
+  }
+
+};
+
+export const calcToolStore = createStore(calcToolReducer);
+
+export type CalcToolProps = {
+  result: number,
+  onAdd: (num: number) => void,
+  onSubtract: (num: number) => void,
+};
+
+export function CalcTool(props: CalcToolProps) {
+
+  const [ numInput, setNumInput ] = useState(0);
+
+  return (
+    <form>
+      <div>Result: <span>{props.result}</span></div>
+      <div><label>Num Input:
+          <input type="number" value={numInput}
+            onChange={e => setNumInput(e.target.valueAsNumber)} />
+      </label></div>
+      <fieldset>
+        <button type="button" onClick={() => props.onAdd(numInput)}>+</button>
+        <button type="button" onClick={() => props.onSubtract(numInput)}>-</button>
+      </fieldset>
+    </form>
+  );
+}
 
