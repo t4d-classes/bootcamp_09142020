@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { Car, CarKeys } from '../models/Car';
+import { CarsSort } from '../models/CarTool';
 
 import { CarEditRow } from './CarEditRow';
 import { CarViewRow } from './CarViewRow';
+
 
 export type CarTableProps = {
   cars: Car[],
@@ -17,13 +19,6 @@ export type CarTableProps = {
   // onSortCars: (col: CarKeys) => void,
   onSortCars: (col: keyof Car) => void,
 };
-
-export type CarsSort = {
-  // col: string,
-  // col: CarKeys,
-  col: keyof Car,
-  dir: string,
-}
 
 type ColHeaderProps = {
   carsSort: CarsSort,
@@ -45,6 +40,8 @@ function ColHeader(props: ColHeaderProps) {
   );
 }
 
+// can be reused anywhere
+// presentational component - ui-only, no knowledge of the application itself
 export function CarTable({
   cars, editCarId, carsSort,
   onEditCar: editCar,

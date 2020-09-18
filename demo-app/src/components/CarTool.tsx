@@ -1,23 +1,20 @@
 import React from 'react';
 
-import { Car } from '../models/Car';
-
-import { useCarToolStore } from '../hooks/useCarToolStore';
+import { useCarToolStoreContext } from '../contexts/carToolContext';
 import { ToolHeader } from './ToolHeader';
 import { CarTable } from './CarTable';
 import { CarForm } from './CarForm';
 
-export type CarToolProps = {
-  cars: Car[],
-};
-
-export function CarTool(props: CarToolProps) {
+// specific to the application
+// container component - no ui, but it does have
+// knowledge of the application store
+export function CarTool() {
 
   const {
     sortedCars, carsSort, editCarId,
     editCar, deleteCar, saveCar, cancelCar, sortCars,
     addCar,
-  } = useCarToolStore(props.cars);
+  } = useCarToolStoreContext();
 
   return (
     <>

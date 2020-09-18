@@ -1,9 +1,7 @@
 import { useState } from 'react';
 
 import { Car } from '../models/Car';
-import { CarsSort } from '../components/CarTable';
-import { CarFormData } from '../components/CarForm';
-
+import { CarsSort, CarFormData, CarToolStore } from '../models/CarTool';
 import { useList } from '../hooks/useList';
 
 // computed value
@@ -25,27 +23,14 @@ const sortedCars = (cars: Car[], carsSort: CarsSort) => {
   });
 }
 
-type CarToolState = {
-  sortedCars: Car[],
-  editCarId: number,
-  carsSort: CarsSort,
-}
 
-type CarToolActions = {
-  addCar: (carForm: CarFormData) => void,
-  saveCar: (car: Car) => void,
-  deleteCar: (carId: number) => void,
-  editCar: (carId: number) => void,
-  cancelCar: () => void,
-  sortCars: (col: keyof Car) => void,
-}
-
-type CarToolStore = CarToolState & CarToolActions;
 
 type UseCarToolStore = (initialCars: Car[]) => CarToolStore;
 
+// Store - contains both the state data and stateful logic for updating the data
 export const useCarToolStore: UseCarToolStore = (initialCars) => {
 
+  // Application State - Data
   const [ carsSort, setCarsSort ] = useState<CarsSort>({
     col: 'id',
     dir: 'asc',
@@ -54,6 +39,7 @@ export const useCarToolStore: UseCarToolStore = (initialCars) => {
   const [ cars, appendCar, replaceCar, removeCar ] =
     useList<Car>([ ...initialCars ]);
 
+  // Application Stateful Logic - Functions/Logic
   const addCar = (carForm: CarFormData) => {
     appendCar(carForm);
     setEditCarId(-1);

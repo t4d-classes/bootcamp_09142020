@@ -2,14 +2,7 @@ import React from 'react';
 
 import { nanToString } from '../utils';
 import { useForm } from '../hooks/useForm';
-
-export type CarFormData = {
-  make: string;
-  model: string;
-  year: number;
-  color: string;
-  price: number;
-}
+import { CarFormData } from '../models/CarTool';
 
 export type CarFormProps = {
   buttonText: string,

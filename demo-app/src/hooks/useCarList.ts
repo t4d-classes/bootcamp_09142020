@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Car } from '../models/Car';
-import { CarFormData } from '../components/CarForm';
+import { CarFormData } from '../models/CarTool';
 
 type UseCarList = (initialCars: Car[]) => ([ Car[], (carForm: CarFormData) => void, (car: Car) => void, (carId: number) => void ]);
 
