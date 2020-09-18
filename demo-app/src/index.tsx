@@ -28,6 +28,10 @@ export const createSubtractAction: CalcOpActionCreator = (num) => ({
   }
 });
 
+export function isCalcOpAction(action: Action<string>): action is CalcOpAction {
+  return action.type === ADD_ACTION || action.type === SUBTRACT_ACTION;
+}
+
 // state data
 export type CalcToolState = {
   result: number,
