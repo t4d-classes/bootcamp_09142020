@@ -1,6 +1,7 @@
 import React ,{ useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Action, Reducer, createStore } from 'redux';
+import { Action, Reducer, createStore, bindActionCreators } from 'redux';
+import { useSelector, useDispatch, Provider } from 'react-redux';
 
 const ADD_ACTION = 'ADD';
 const SUBTRACT_ACTION = 'SUBTRACT';
@@ -61,6 +62,7 @@ export type CalcToolProps = {
   onSubtract: (num: number) => void,
 };
 
+// presentational component
 export function CalcTool(props: CalcToolProps) {
 
   const [ numInput, setNumInput ] = useState(0);
@@ -79,4 +81,28 @@ export function CalcTool(props: CalcToolProps) {
     </form>
   );
 }
+
+export function CalcToolContainer() {
+
+  const result = useSelector<CalcToolState, number>(state => state.result);
+
+  // boundActionsMap.onAdd = (num) => dispatch(createAddAction(num))
+  // boundActionsMap.onSubtract = (num) => dispatch(createSubtractAction(num))
+  const boundActionsMap = bindActionCreators({
+    onAdd: createAddAction,
+    onSubtract: createSubtractAction,
+  }, useDispatch());
+
+  return (
+    <CalcTool result={result} {...boundActionsMap} />
+  );
+
+}
+
+ReactDOM.render(
+  <Provider store={calcToolStore}>
+    <CalcToolContainer />
+  </Provider>,
+  document.querySelector('#root'),
+);
 
