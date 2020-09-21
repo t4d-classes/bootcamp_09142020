@@ -272,7 +272,10 @@ export function CalcToolContainer() {
 
   const result = useSelector<CalcToolState, number>(state => state.result);
   const history = useSelector<CalcToolState, CalcHistoryEntry[]>(state => state.history);
-  const validationMessage = useSelector<CalcToolState, string>(state => state.validationMessage);
+
+  const validationMessage = useSelector<CalcToolState, string>(state => {
+    return state.validationMessage.toUpperCase();
+  });
 
   const boundActionsMap = bindActionCreators({
     onAdd: createAddAction,
