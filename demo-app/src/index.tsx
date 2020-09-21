@@ -1,4 +1,4 @@
-import React ,{ useState } from 'react';
+import React ,{ useState, ChangeEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { Action, Reducer, createStore, bindActionCreators } from 'redux';
 import { useSelector, useDispatch, Provider } from 'react-redux';
@@ -214,6 +214,20 @@ export function CalcTool(props: CalcToolProps) {
     };
   };
 
+  const numChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const num = e.target.valueAsNumber;
+
+    if (num < 0 || num > 10) {
+      props.onSetValidationMessage('Number must be between 0 and 10, inclusive');
+    } else {
+      props.onSetValidationMessage('');
+    }
+
+    setNumInput(num);
+
+  };
+
   return (
     <>
       {props.validationMessage && <div>{props.validationMessage}</div>}
@@ -221,7 +235,7 @@ export function CalcTool(props: CalcToolProps) {
         <div>Result: <span>{props.result}</span></div>
         <div><label>Num Input:
             <input type="number" value={numInput}
-              onChange={e => setNumInput(e.target.valueAsNumber)} />
+              onChange={numChange} />
         </label></div>
         <fieldset>
           <button type="button" onClick={validateOp(props.onAdd)}>+</button>
