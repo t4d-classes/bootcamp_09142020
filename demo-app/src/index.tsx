@@ -8,6 +8,7 @@ const SUBTRACT_ACTION = 'SUBTRACT';
 const MULTIPLY_ACTION = 'MULTIPLY';
 const DIVIDE_ACTION = 'DIVIDE';
 const CLEAR_ACTION = 'CLEAR';
+const DELETE_ENTRY_ACTION = 'DELETE_ENTRY';
 
 export interface CalcOpAction extends Action<string> {
   payload: {
@@ -15,13 +16,25 @@ export interface CalcOpAction extends Action<string> {
   },
 }
 
+export interface CalcHistoryAction extends Action<string> {
+  payload: {
+    entryId: number,
+  },
+}
+
 export type CalcAction = Action<string>;
 
 export type CalcOpActionCreator = (num: number) => CalcOpAction;
+export type CalcHistoryActionCreator = (entryId: number) => CalcHistoryAction;
 export type CalcActionCreator = () => CalcAction;
+
 
 export function isCalcOpAction(action: Action<string>): action is CalcOpAction {
   return [ ADD_ACTION, SUBTRACT_ACTION, MULTIPLY_ACTION, DIVIDE_ACTION ].includes(action.type);
+}
+
+export function isCalcHistoryAction(action: Action<string>): action is CalcHistoryAction {
+  return [ DELETE_ENTRY_ACTION ].includes(action.type);
 }
 
 export function isCalcAction(action: Action<string>): action is CalcOpAction {
@@ -56,6 +69,13 @@ export const createDivideAction: CalcOpActionCreator = (num) => ({
   }
 });
 
+export const createDeleteEntryAction: CalcHistoryActionCreator = (entryId) => ({
+  type: DELETE_ENTRY_ACTION,
+  payload: {
+    entryId,
+  }
+});
+
 export const createClearAction: CalcActionCreator = () => ({
   type: CLEAR_ACTION,
 });
@@ -73,9 +93,11 @@ export type CalcToolState = {
 
 const initialState = { result: 0, history: [], };
 
+type CalcActions = CalcOpAction | CalcHistoryAction | CalcAction;
+
 // stateful logic
 // newState <- reducer(currentState, action)
-export const calcToolReducer: Reducer<CalcToolState, CalcOpAction | CalcAction> = (state = initialState, action) => {
+export const calcToolReducer: Reducer<CalcToolState, CalcActions> = (state = initialState, action) => {
 
   let newState = state;
 
@@ -118,6 +140,15 @@ export const calcToolReducer: Reducer<CalcToolState, CalcOpAction | CalcAction> 
 
   }
 
+  if (isCalcHistoryAction(action)) {
+    const newHistory = [ ...newState.history ];
+    newHistory.splice(action.payload.entryId, 1);
+    newState = {
+      ...state,
+      history: newHistory,
+    };
+  }
+
   return newState;
 
 };
@@ -132,11 +163,17 @@ export type CalcToolProps = {
   onMultiply: (num: number) => void,
   onDivide: (num: number) => void,
   onClear: () => void,
+  onDeleteEntry: (entryId: number) => void,
 };
 
 export function CalcTool(props: CalcToolProps) {
 
   const [ numInput, setNumInput ] = useState(0);
+
+  const clear = () => {
+    setNumInput(0);
+    props.onClear();
+  };
 
   return (
     <>
@@ -151,12 +188,15 @@ export function CalcTool(props: CalcToolProps) {
           <button type="button" onClick={() => props.onSubtract(numInput)}>-</button>
           <button type="button" onClick={() => props.onMultiply(numInput)}>*</button>
           <button type="button" onClick={() => props.onDivide(numInput)}>/</button>
-          <button type="button" onClick={() => props.onClear()}>Clear</button>
+          <button type="button" onClick={clear}>Clear</button>
         </fieldset>
       </form>
       <ul>
         {props.history.map( (historyEntry, index) =>
-          <li key={index}>{historyEntry.name} {historyEntry.value}</li>)}
+          <li key={index}>
+            {historyEntry.name} {historyEntry.value}
+            <button type="button" onClick={() => props.onDeleteEntry(index)}>X</button>
+          </li>)}
       </ul>
     </>
   );
@@ -173,6 +213,7 @@ export function CalcToolContainer() {
     onMultiply: createMultiplyAction,
     onDivide: createDivideAction,
     onClear: createClearAction,
+    onDeleteEntry: createDeleteEntryAction,
   }, useDispatch());
 
   return (
