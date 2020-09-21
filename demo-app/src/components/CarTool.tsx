@@ -1,25 +1,40 @@
 import React from 'react';
 
-import { useCarToolStoreContext } from '../contexts/carToolContext';
 import { ToolHeader } from './ToolHeader';
 import { CarTable } from './CarTable';
 import { CarForm } from './CarForm';
 
-// specific to the application
-// container component - no ui, but it does have
-// knowledge of the application store
-export function CarTool() {
+import { Car, NewCar, CarKeys } from '../models/Car';
+import { CarsSort } from '../models/CarTool';
+
+export type CarToolProps = {
+  cars: Car[],
+  editCarId: number,
+  carsSort: CarsSort,
+  onAddCar: (car: NewCar) => void,
+  onSaveCar: (car: Car) => void,
+  onDeleteCar: (carId: number) => void,
+  onEditCar: (carId: number) => void,
+  onCancelCar: () => void,
+  onSortCars: (col: CarKeys) => void,
+}
+
+export function CarTool(props: CarToolProps) {
 
   const {
-    sortedCars, carsSort, editCarId,
-    editCar, deleteCar, saveCar, cancelCar, sortCars,
-    addCar,
-  } = useCarToolStoreContext();
+    cars, editCarId, carsSort,
+    onAddCar: addCar,
+    onSaveCar: saveCar,
+    onDeleteCar: deleteCar,
+    onEditCar: editCar,
+    onCancelCar: cancelCar,
+    onSortCars: sortCars,
+  } = props;
 
   return (
     <>
       <ToolHeader headerText="Car Tool" />
-      <CarTable cars={sortedCars} carsSort={carsSort} editCarId={editCarId}
+      <CarTable cars={cars} carsSort={carsSort} editCarId={editCarId}
                 onEditCar={editCar} onDeleteCar={deleteCar}
                 onSaveCar={saveCar} onCancelCar={cancelCar}
                 onSortCars={sortCars} />

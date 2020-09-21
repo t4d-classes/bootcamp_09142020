@@ -1,14 +1,16 @@
+// default imports
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { calcToolStore } from './stores/calcToolStore';
-import { CalcToolContainer } from './containers/CalcToolContainer';
+import { carToolStore } from './stores/carToolStore';
+import { CarToolContainer } from './containers/CarToolContainer';
 
+import './index.css';
 
 ReactDOM.render(
-  <Provider store={calcToolStore}>
-    <CalcToolContainer />
+  <Provider store={carToolStore}>
+    <CarToolContainer />
   </Provider>,
   document.querySelector('#root'),
 );

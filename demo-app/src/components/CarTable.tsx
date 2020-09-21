@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Car, CarKeys } from '../models/Car';
+import { Car } from '../models/Car';
 import { CarsSort } from '../models/CarTool';
 
 import { CarEditRow } from './CarEditRow';

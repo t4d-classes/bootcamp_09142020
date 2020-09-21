@@ -9,3 +9,6 @@ export type Car = {
 }
 
 export type CarKeys = 'id' | 'make' | 'model' | 'year' | 'color' | 'price';
+
+export type NewCar = Omit<Car, 'id'>;
+
