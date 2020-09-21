@@ -1,7 +1,8 @@
 import React ,{ useState, ChangeEvent } from 'react';
 import ReactDOM from 'react-dom';
-import { Action, Reducer, createStore, bindActionCreators } from 'redux';
+import { Action, Reducer, createStore, bindActionCreators, combineReducers } from 'redux';
 import { useSelector, useDispatch, Provider } from 'react-redux';
+import { stringify } from 'querystring';
 
 const ADD_ACTION = 'ADD';
 const SUBTRACT_ACTION = 'SUBTRACT';
@@ -114,70 +115,81 @@ const initialState = { result: 0, history: [], validationMessage: '', };
 
 type CalcActions = CalcOpAction | CalcHistoryAction | CalcAction;
 
-// stateful logic
-// newState <- reducer(currentState, action)
-export const calcToolReducer: Reducer<CalcToolState, CalcActions> = (state = initialState, action) => {
-
-  let newState = state;
+export const resultReducer: Reducer<number, CalcActions> = (result = 0, action) => {
 
   if (isCalcAction(action)) {
-    newState = initialState;
-  }
-
-  if (isCalcValidationAction(action)) {
-    newState = {
-      ...newState,
-      validationMessage: action.payload.message,
-    };
+    return 0;
   }
 
   if (isCalcOpAction(action)) {
 
     switch (action.type) {
       case ADD_ACTION:
-        newState = {
-          ...state,
-          result: state.result + action.payload.num,
-          history: [ ...state.history, { name: '+', value: action.payload.num } ],
-        };
-        break;
+        return result + action.payload.num;
       case SUBTRACT_ACTION:
-        newState = {
-          ...state,
-          result: state.result - action.payload.num,
-          history: [ ...state.history, { name: '-', value: action.payload.num } ],
-        };
-        break;
+        return result - action.payload.num;
       case MULTIPLY_ACTION:
-        newState = {
-          ...state,
-          result: state.result * action.payload.num,
-          history: [ ...state.history, { name: '*', value: action.payload.num } ],
-        };
-        break;
+        return result * action.payload.num;
       case DIVIDE_ACTION:
-        newState = {
-          ...state,
-          result: state.result / action.payload.num,
-          history: [ ...state.history, { name: '/', value: action.payload.num } ],
-        };
-        break;
+        return result / action.payload.num;
     }
 
   }
 
-  if (isCalcHistoryAction(action)) {
-    const newHistory = [ ...newState.history ];
-    newHistory.splice(action.payload.entryIndex, 1);
-    newState = {
-      ...state,
-      history: newHistory,
-    };
+  return result;
+};
+
+const actionToOperator = new Map<string, string>();
+actionToOperator.set(ADD_ACTION, '+');
+actionToOperator.set(SUBTRACT_ACTION, '-');
+actionToOperator.set(MULTIPLY_ACTION, '*');
+actionToOperator.set(DIVIDE_ACTION, '/');
+
+export const historyReducer: Reducer<CalcHistoryEntry[], CalcActions> = (history = [], action) => {
+
+  if (isCalcAction(action)) {
+    return [];
   }
 
-  return newState;
+  if (isCalcOpAction(action)) {
+    return [ ...history, {
+      name: actionToOperator.get(action.type) || 'unknown',
+      value: action.payload.num,
+    } ];
+  }
+
+  if (isCalcHistoryAction(action)) {
+    const newHistory = [ ...history ];
+    newHistory.splice(action.payload.entryIndex, 1);
+    return newHistory;
+  }
+
+  return history;
 
 };
+
+// reducer functions must be pure fuctions...
+// four qualities of a pure function
+// 1. Only use data passed in via parameters
+// 2. Parmeters can never be mutated
+// 3. No side-effects
+// 4. The only output is the return value
+export const validationMessageReducer: Reducer<string, CalcActions> = (validationMessage = '', action) => {
+
+  if (isCalcValidationAction(action)) {
+    return action.payload.message;
+  }
+
+  return validationMessage;
+}
+
+// stateful logic
+// newState <- reducer(currentState, action)
+export const calcToolReducer: Reducer<CalcToolState, CalcActions> = combineReducers({
+  result: resultReducer,
+  history: historyReducer,
+  validationMessage: validationMessageReducer,
+});
 
 export const calcToolStore = createStore(calcToolReducer);
 
