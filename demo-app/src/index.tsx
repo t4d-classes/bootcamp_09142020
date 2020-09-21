@@ -103,14 +103,14 @@ export const calcToolReducer: Reducer<CalcToolState, CalcOpAction | CalcAction> 
       case MULTIPLY_ACTION:
         newState = {
           ...state,
-          result: state.result - action.payload.num,
+          result: state.result * action.payload.num,
           history: [ ...state.history, { name: '*', value: action.payload.num } ],
         };
         break;
       case DIVIDE_ACTION:
         newState = {
           ...state,
-          result: state.result - action.payload.num,
+          result: state.result / action.payload.num,
           history: [ ...state.history, { name: '/', value: action.payload.num } ],
         };
         break;

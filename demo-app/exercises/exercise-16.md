@@ -4,6 +4,6 @@
 
 2. If the user types in a number less than zero or greater than 10, then display a validation message when add, subtract, multiply or divide are clicked.
 
-3. When the use clicks the clear button, display a 0 in the number entry input box.
+3. When the user clicks the clear button, display a 0 in the number entry input box.
 
 4. Ensure it works.
