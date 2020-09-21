@@ -9,7 +9,7 @@ const MULTIPLY_ACTION = 'MULTIPLY';
 const DIVIDE_ACTION = 'DIVIDE';
 const CLEAR_ACTION = 'CLEAR';
 const DELETE_ENTRY_ACTION = 'DELETE_ENTRY';
-
+const SET_VALIDATION_MESSAGE_ACTION = 'SET_VALIDATION_MESSAGE';
 export interface CalcOpAction extends Action<string> {
   payload: {
     num: number,
@@ -18,14 +18,21 @@ export interface CalcOpAction extends Action<string> {
 
 export interface CalcHistoryAction extends Action<string> {
   payload: {
-    entryId: number,
+    entryIndex: number,
+  },
+}
+
+export interface CalcValidationAction extends Action<string> {
+  payload: {
+    message: string,
   },
 }
 
 export type CalcAction = Action<string>;
 
 export type CalcOpActionCreator = (num: number) => CalcOpAction;
-export type CalcHistoryActionCreator = (entryId: number) => CalcHistoryAction;
+export type CalcValidationActionCreator = (message: string) => CalcValidationAction;
+export type CalcHistoryActionCreator = (entryIndex: number) => CalcHistoryAction;
 export type CalcActionCreator = () => CalcAction;
 
 
@@ -35,6 +42,10 @@ export function isCalcOpAction(action: Action<string>): action is CalcOpAction {
 
 export function isCalcHistoryAction(action: Action<string>): action is CalcHistoryAction {
   return [ DELETE_ENTRY_ACTION ].includes(action.type);
+}
+
+export function isCalcValidationAction(action: Action<string>): action is CalcValidationAction {
+  return [ SET_VALIDATION_MESSAGE_ACTION ].includes(action.type);
 }
 
 export function isCalcAction(action: Action<string>): action is CalcOpAction {
@@ -69,10 +80,17 @@ export const createDivideAction: CalcOpActionCreator = (num) => ({
   }
 });
 
-export const createDeleteEntryAction: CalcHistoryActionCreator = (entryId) => ({
+export const createDeleteEntryAction: CalcHistoryActionCreator = (entryIndex) => ({
   type: DELETE_ENTRY_ACTION,
   payload: {
-    entryId,
+    entryIndex,
+  }
+});
+
+export const createSetValidationMessageAction: CalcValidationActionCreator = (message) => ({
+  type: SET_VALIDATION_MESSAGE_ACTION,
+  payload: {
+    message,
   }
 });
 
@@ -89,9 +107,10 @@ export type CalcHistoryEntry = {
 export type CalcToolState = {
   result: number,
   history: CalcHistoryEntry[],
+  validationMessage: string,
 };
 
-const initialState = { result: 0, history: [], };
+const initialState = { result: 0, history: [], validationMessage: '', };
 
 type CalcActions = CalcOpAction | CalcHistoryAction | CalcAction;
 
@@ -103,6 +122,13 @@ export const calcToolReducer: Reducer<CalcToolState, CalcActions> = (state = ini
 
   if (isCalcAction(action)) {
     newState = initialState;
+  }
+
+  if (isCalcValidationAction(action)) {
+    newState = {
+      ...newState,
+      validationMessage: action.payload.message,
+    };
   }
 
   if (isCalcOpAction(action)) {
@@ -142,7 +168,7 @@ export const calcToolReducer: Reducer<CalcToolState, CalcActions> = (state = ini
 
   if (isCalcHistoryAction(action)) {
     const newHistory = [ ...newState.history ];
-    newHistory.splice(action.payload.entryId, 1);
+    newHistory.splice(action.payload.entryIndex, 1);
     newState = {
       ...state,
       history: newHistory,
@@ -158,12 +184,14 @@ export const calcToolStore = createStore(calcToolReducer);
 export type CalcToolProps = {
   result: number,
   history: CalcHistoryEntry[],
+  validationMessage: string,
   onAdd: (num: number) => void,
   onSubtract: (num: number) => void,
   onMultiply: (num: number) => void,
   onDivide: (num: number) => void,
   onClear: () => void,
-  onDeleteEntry: (entryId: number) => void,
+  onDeleteEntry: (entryIndex: number) => void,
+  onSetValidationMessage: (message: string) => void,
 };
 
 export function CalcTool(props: CalcToolProps) {
@@ -175,8 +203,20 @@ export function CalcTool(props: CalcToolProps) {
     props.onClear();
   };
 
+  const validateOp = (fn: (num: number) => void) => {
+    return () => {
+      if (numInput < 0 || numInput > 10) {
+        props.onSetValidationMessage('Number must be between 0 and 10, inclusive');
+      } else {
+        props.onSetValidationMessage('');
+        fn(numInput);
+      }
+    };
+  };
+
   return (
     <>
+      {props.validationMessage && <div>{props.validationMessage}</div>}
       <form>
         <div>Result: <span>{props.result}</span></div>
         <div><label>Num Input:
@@ -184,10 +224,10 @@ export function CalcTool(props: CalcToolProps) {
               onChange={e => setNumInput(e.target.valueAsNumber)} />
         </label></div>
         <fieldset>
-          <button type="button" onClick={() => props.onAdd(numInput)}>+</button>
-          <button type="button" onClick={() => props.onSubtract(numInput)}>-</button>
-          <button type="button" onClick={() => props.onMultiply(numInput)}>*</button>
-          <button type="button" onClick={() => props.onDivide(numInput)}>/</button>
+          <button type="button" onClick={validateOp(props.onAdd)}>+</button>
+          <button type="button" onClick={validateOp(props.onSubtract)}>-</button>
+          <button type="button" onClick={validateOp(props.onMultiply)}>*</button>
+          <button type="button" onClick={validateOp(props.onDivide)}>/</button>
           <button type="button" onClick={clear}>Clear</button>
         </fieldset>
       </form>
@@ -206,6 +246,7 @@ export function CalcToolContainer() {
 
   const result = useSelector<CalcToolState, number>(state => state.result);
   const history = useSelector<CalcToolState, CalcHistoryEntry[]>(state => state.history);
+  const validationMessage = useSelector<CalcToolState, string>(state => state.validationMessage);
 
   const boundActionsMap = bindActionCreators({
     onAdd: createAddAction,
@@ -214,10 +255,11 @@ export function CalcToolContainer() {
     onDivide: createDivideAction,
     onClear: createClearAction,
     onDeleteEntry: createDeleteEntryAction,
+    onSetValidationMessage: createSetValidationMessageAction,
   }, useDispatch());
 
   return (
-    <CalcTool result={result} history={history} {...boundActionsMap} />
+    <CalcTool result={result} history={history} validationMessage={validationMessage} {...boundActionsMap} />
   );
 
 }
