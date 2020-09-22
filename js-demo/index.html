@@ -59,7 +59,7 @@
           }, delay());
       }, delay());
       */
-      
+
       /*
       let counter = 0;
 
@@ -165,7 +165,7 @@
       console.log('made it here...');
 
       */
-
+      /*
       const myFetch = (url) => {
 
         return new Promise(resolve => {
@@ -184,18 +184,61 @@
         });
 
       };
-
+      */
 
       // Lab Exercise
 
       // implement the myFetch function so the following api call works correctly
       // use the XHR code above to help implement the myFetch function
-      myFetch('https://t4d-class-rest-api.herokuapp.com/cars').then(cars => console.log(cars));
+      // myFetch('https://t4d-class-rest-api.herokuapp.com/cars').then(cars => console.log(cars));
 
-      fetch('https://t4d-class-rest-api.herokuapp.com/cars')
-        .then(res => res.json())
-        .then(cars => console.log(cars));
+      // fetch('https://t4d-class-rest-api.herokuapp.com/cars')
+      //  .then(res => res.json())
+      //  .then(cars => console.log(cars));
 
+      /*
+      const p1 = new Promise(resolve => setTimeout(() => resolve('a'), delay()));
+      const p2 = new Promise((resolve, reject) => setTimeout(() => reject('b'), delay()));
+      const p3 = new Promise(resolve => setTimeout(() => resolve('c'), delay()));
+
+      p1.then(result => console.log(result + ' resolved'));
+      p2.then(result => console.log(result + ' resolved')).catch(result => console.log(result + ' was rejected'));
+      p3.then(result => console.log(result + ' resolved'));
+
+      Promise.all([p1,p2,p3])
+        .then(result => {
+          console.log(result);
+          console.log('all done');
+        })
+        .catch(result => {
+          console.log(result);
+          console.log('one was rejected');
+        })
+        .finally(() => {
+          console.log('run regardless of the promise outcome');
+        });
+
+      */
+      /*
+      const getCars = () => {
+        return fetch('https://t4d-class-rest-api.herokuapp.com/cars')
+          .then(res => res.json());
+      };
+      */
+
+      const getCars = async () => {
+        const res = await Promise.all([
+          fetch('https://t4d-class-rest-api.herokuapp.com/cars'),
+          fetch('https://t4d-class-rest-api.herokuapp.com/colors'),
+        ]);
+        const cars = await res.json();
+
+        return cars;
+      };
+
+      getCars().then(cars => console.log(cars));
+
+      
 
     </script>
 
