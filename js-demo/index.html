@@ -166,22 +166,35 @@
 
       */
 
-      const xhr = new XMLHttpRequest();
+      const myFetch = (url) => {
 
-      xhr.addEventListener('readystatechange', () => {
-        if (xhr.status === 200 && xhr.readyState === 4) {
-          console.log(JSON.parse(xhr.responseText));
-        }
-      });
+        return new Promise(resolve => {
 
-      xhr.open('GET', 'https://t4d-class-rest-api.herokuapp.com/cars');
-      xhr.send();
+          const xhr = new XMLHttpRequest();
+
+          xhr.addEventListener('readystatechange', () => {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+              resolve(JSON.parse(xhr.responseText));
+            }
+          });
+    
+          xhr.open('GET', url);
+          xhr.send();
+
+        });
+
+      };
+
 
       // Lab Exercise
 
       // implement the myFetch function so the following api call works correctly
       // use the XHR code above to help implement the myFetch function
       myFetch('https://t4d-class-rest-api.herokuapp.com/cars').then(cars => console.log(cars));
+
+      fetch('https://t4d-class-rest-api.herokuapp.com/cars')
+        .then(res => res.json())
+        .then(cars => console.log(cars));
 
 
     </script>
