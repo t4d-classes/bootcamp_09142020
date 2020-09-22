@@ -4,4 +4,7 @@ import thunk from 'redux-thunk';
 
 import { carToolReducer } from '../reducers/carToolReducers';
 
-export const carToolStore = createStore(carToolReducer);
+export const carToolStore = createStore(
+  carToolReducer,
+  composeWithDevTools(applyMiddleware(thunk)),
+);

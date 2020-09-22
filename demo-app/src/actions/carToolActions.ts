@@ -1,6 +1,9 @@
-import { Action } from 'redux';
+import { Action, Dispatch } from 'redux';
 
 import { Car, NewCar, CarKeys } from '../models/Car';
+
+export const REFRESH_CARS_REQUEST_ACTION = 'REFRESH_CARS_REQUEST';
+export const REFRESH_CARS_DONE_ACTION = 'REFRESH_CARS_DONE';
 
 export const APPEND_CAR_ACTION = 'APPEND_CAR';
 export const REPLACE_CAR_ACTION = 'REPLACE_CAR';
@@ -8,6 +11,49 @@ export const REMOVE_CAR_ACTION = 'REMOVE_CAR';
 export const EDIT_CAR_ACTION = 'EDIT_CAR';
 export const CANCEL_CAR_ACTION = 'CANCEL_CAR';
 export const SORT_CARS_ACTION = 'SORT_CARS';
+
+// Refresh Cars Action
+
+export type RefreshCarsRequestAction = Action<string>;
+
+export interface RefreshCarsDoneAction extends Action<string> {
+  payload: { cars: Car[] }
+}
+
+export type CreateRefreshCarsRequestAction = () => RefreshCarsRequestAction;
+export type CreateRefreshCarsDoneAction = (cars: Car[]) => RefreshCarsDoneAction;
+
+export function isRefreshCarsRequestAction(action: Action<string>): action is RefreshCarsRequestAction {
+  return [ REFRESH_CARS_REQUEST_ACTION ].includes(action.type);
+}
+
+export function isRefreshCarsDoneAction(action: Action<string>): action is RefreshCarsDoneAction {
+  return [ REFRESH_CARS_DONE_ACTION ].includes(action.type);
+}
+
+export const createRefreshCarsRequestAction: CreateRefreshCarsRequestAction = () => ({
+  type: REFRESH_CARS_REQUEST_ACTION,
+});
+
+export const createRefreshCarsDoneAction: CreateRefreshCarsDoneAction = (cars: Car[]) => ({
+  type: REFRESH_CARS_DONE_ACTION, payload: { cars }
+});
+
+export const refreshCars = () => {
+
+  // this is the function object which is dispatched
+  return async (dispatch: Dispatch) => {
+    dispatch(createRefreshCarsRequestAction());
+    const res = await fetch('http://localhost:3060/cars');
+    const cars = await res.json();
+    dispatch(createRefreshCarsDoneAction(cars));
+  };
+
+};
+
+
+
+// End Refresh Cars Action
 
 // New Car Action
 

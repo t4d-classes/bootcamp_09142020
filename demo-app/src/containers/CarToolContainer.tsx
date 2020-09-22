@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -34,6 +34,8 @@ export function CarToolContainer() {
   const editCarId = useSelector<CarToolState, number>(state => state.editCarId);
   const carsSort = useSelector<CarToolState, CarsSort>(state => state.carsSort);
 
+  const dispatch = useDispatch();
+
   const boundActions = bindActionCreators({
     onAddCar: CarToolActions.createAppendCarAction,
     onSaveCar: CarToolActions.createReplaceCarAction,
@@ -41,7 +43,11 @@ export function CarToolContainer() {
     onEditCar: CarToolActions.createEditCarAction,
     onCancelCar: CarToolActions.createCancelCarAction,
     onSortCars: CarToolActions.createSortCarsAction,
-  }, useDispatch());
+  }, dispatch);
+
+  useEffect(() => {
+    dispatch(CarToolActions.refreshCars());
+  }, [dispatch]);
 
   return <CarTool {...boundActions} cars={cars} editCarId={editCarId} carsSort={carsSort} />;
 
