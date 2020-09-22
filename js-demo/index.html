@@ -59,22 +59,41 @@
           }, delay());
       }, delay());
       */
+      
+      /*
+      let counter = 0;
 
       const allDone = () => {
         console.log('all done');
       }
 
+      counter++;
       setTimeout(() => {
         console.log('a');
+        counter--;
+        if (counter === 0) {
+          allDone();
+        }
       }, delay());
 
+      counter++;
       setTimeout(() => {
         console.log('b');
+        counter--;
+        if (counter === 0) {
+          allDone();
+        }
       }, delay());
 
+      counter++;
       setTimeout(() => {
         console.log('c');
+        counter--;
+        if (counter === 0) {
+          allDone();
+        }
       }, delay());
+      */
 
       // Objective: when all three callback finish, run the all done function
       // Rules:
@@ -86,6 +105,83 @@
       // create a folder named 'js-demo'
       // create an index.html file, and copy this code into it
       // run it with 'npx serve .' from a terminal window in the js-demo folder
+
+
+    </script>
+
+    <script>
+
+      /*
+      class Promise {
+
+        constructor(asyncFn) {
+
+          this._resolveFns = [];
+
+          this._rejectFns = [];
+
+          const resolveFn = (data) =>
+            this._resolveFns.forEach(fn => fn(data));
+          const rejectFn = (data) =>
+            this._rejectFns.forEach(fn => fn(data));
+
+          asyncFn(resolveFn, rejectFn);
+
+        }
+
+        then(fn) {
+          this._resolveFns.push(fn);
+        }
+
+        catch(fn) {
+          this._rejectFns.push(fn);
+        }
+      }
+      */
+
+      /*
+      console.log('let\'s create a promise!');
+
+      const p = new Promise((resolve, reject) => {
+
+        console.log('call setTimeout');
+
+        setTimeout(() => {
+          console.log('call reject');
+          reject('some data');
+        }, 2000);
+
+      });
+
+      p
+        .then((data) => {
+          console.log(data);
+          console.log('all done');
+        })
+        .then()
+        .catch(data =>
+          console.log('something went wrong: ', data));
+
+      console.log('made it here...');
+
+      */
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.addEventListener('readystatechange', () => {
+        if (xhr.status === 200 && xhr.readyState === 4) {
+          console.log(JSON.parse(xhr.responseText));
+        }
+      });
+
+      xhr.open('GET', 'https://t4d-class-rest-api.herokuapp.com/cars');
+      xhr.send();
+
+      // Lab Exercise
+
+      // implement the myFetch function so the following api call works correctly
+      // use the XHR code above to help implement the myFetch function
+      myFetch('https://t4d-class-rest-api.herokuapp.com/cars').then(cars => console.log(cars));
 
 
     </script>
