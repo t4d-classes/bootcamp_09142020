@@ -5,7 +5,7 @@ import { CarsSort } from '../models/CarTool';
 import { CarToolState } from '../models/CarToolState';
 
 import {
-  REFRESH_CARS_DONE_ACTION, isRefreshCarsDoneAction,
+  REFRESH_CARS_DONE_ACTION, isRefreshCarsDoneAction, RefreshCarsDoneAction,
   EDIT_CAR_ACTION, isExistingCarAction, isNewCarAction,
   REMOVE_CAR_ACTION, isCarAction, APPEND_CAR_ACTION, REPLACE_CAR_ACTION, isSortCarsAction
 } from '../actions/carToolActions';
@@ -57,13 +57,19 @@ export const editCarIdReducer: Reducer<number, EditCarIdReducerActions> = (editC
   return editCarId;
 }
 
-type CarsReducerActions = NewCarAction | ExistingCarAction | CarIdAction;
+type CarsReducerActions = RefreshCarsDoneAction | NewCarAction | ExistingCarAction | CarIdAction;
 
 export const carsReducer: Reducer<Car[], CarsReducerActions> = (cars = [], action) => {
 
+  // Eric's newer way
   if (isRefreshCarsDoneAction(action)) {
     return action.payload.cars;
   }
+
+  // Eric's older way
+  // if (action.type === REFRESH_CARS_DONE_ACTION) {
+  //   return (action as RefreshCarsDoneAction).payload.cars;
+  // }
 
   if (isNewCarAction(action) && action.type === APPEND_CAR_ACTION) {
     return [
