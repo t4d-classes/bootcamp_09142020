@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>JS Demo</title>
+  </head>
+
+  <body>
+    <script>
+
+      const items = [];
+
+      for (let x=0; x<100000; x++) {
+        items.push({ id: x, name: 'item-' + x });
+      }
+
+      console.dir(items.length);
+
+      function replaceItem(items, item) {
+        const newItems = items.concat();
+        const itemIndex = items.findIndex(i => i.id === item.id);
+        newItems[itemIndex] = item;
+        return newItems;
+      }
+
+      function replaceItem2(items, item) {
+        // objection 1: semantic meaning of map is transform from one array to another array
+        // doing a replace of a single item is not transform
+
+        // objection 2: iterates over all of the items regardless of the one being replaced
+
+        const newItems = items.map(i => (i.id === item.id ? item : i));
+        return newItems;
+      }
+
+      setTimeout(() => {
+
+        // const items2 = replaceItem(items, { id: 0, name: 'new-item'}); // 0.25s
+        // const items2 = replaceItem(items, { id: 99999, name: 'new-item'}); // 2.6s
+        // const items2 = replaceItem2(items, { id: 0, name: 'new-item'}); // 2.69s
+        // const items2 = replaceItem2(items, { id: 99999, name: 'new-item'}); // 2.62s
+
+        console.log(items2.length)
+
+      }, 2000);
+
+
+    </script>
+  </body>
+</html>

@@ -9,20 +9,23 @@ export type CarFormProps = {
   onSubmitCar: (carForm: CarFormData) => void,
 };
 
+const setupSubmitCar = (props: CarFormProps, carForm: any, resetCarForm: () => void) => {
+  return () => {
+    props.onSubmitCar({
+      ...carForm,
+    });
+  
+    resetCarForm();
+  };
+}
+
+
 export function CarForm(props: CarFormProps) {
 
   const [ carForm, change, resetCarForm ] = useForm({
     make: '', model: '', year: 1900, color: '', price: 0,
   });
 
-  const submitCar = () => {
-
-    props.onSubmitCar({
-      ...carForm,
-    });
-
-    resetCarForm();
-  };
 
   return (
     <form>
@@ -51,7 +54,7 @@ export function CarForm(props: CarFormProps) {
         <input type="number" name="price"
                value={nanToString(carForm.price)} onChange={change} />
       </label>
-      <button type="button" onClick={submitCar}>{props.buttonText}</button>
+      <button type="button" onClick={setupSubmitCar(props, carForm, resetCarForm)}>{props.buttonText}</button>
     </form>
   );
 }
