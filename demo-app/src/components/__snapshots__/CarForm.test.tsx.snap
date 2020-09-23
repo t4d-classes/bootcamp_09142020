@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CarForm /> Enzyme Static HTML <CarForm /> renders 1`] = `"\\"<label>Make<input type=\\\\\\"text\\\\\\" name=\\\\\\"make\\\\\\" id=\\\\\\"make-input\\\\\\" value></label><label>Model<input type=\\\\\\"text\\\\\\" name=\\\\\\"model\\\\\\" id=\\\\\\"model-input\\\\\\" value></label><label>Year<input type=\\\\\\"number\\\\\\" name=\\\\\\"year\\\\\\" id=\\\\\\"year-input\\\\\\" value=\\\\\\"1900\\\\\\"></label><label>Color<input type=\\\\\\"text\\\\\\" name=\\\\\\"color\\\\\\" id=\\\\\\"color-input\\\\\\" value></label><label>Price<input type=\\\\\\"number\\\\\\" name=\\\\\\"price\\\\\\" id=\\\\\\"price-input\\\\\\" value=\\\\\\"0\\\\\\"></label><button type=\\\\\\"button\\\\\\">Add Car</button>\\""`;

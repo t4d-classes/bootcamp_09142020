@@ -19,8 +19,8 @@ export const useForm: UseForm = (initialForm) => {
 
     setForm({
       ...form,
-      [ e.target.name ]: isInput(e.target) && e.target.type === 'number'
-        ? e.target.valueAsNumber : e.target.value,
+      [ e.target.name ]: e.target.type === 'number'
+        ? Number(e.target.value) : e.target.value,
     });
 
   };
