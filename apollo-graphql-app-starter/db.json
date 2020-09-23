@@ -64,6 +64,38 @@
       "color": "w",
       "price": 0,
       "id": 7
+    },
+    {
+      "make": "g",
+      "model": "g",
+      "year": 1900,
+      "color": "g",
+      "price": 0,
+      "id": 8
+    },
+    {
+      "make": "h",
+      "model": "h",
+      "year": 1900,
+      "color": "h",
+      "price": 0,
+      "id": 9
+    },
+    {
+      "make": "u",
+      "model": "u",
+      "year": 1900,
+      "color": "u",
+      "price": 0,
+      "id": 10
+    },
+    {
+      "make": "l",
+      "model": "l",
+      "year": 1900,
+      "color": "l",
+      "price": 0,
+      "id": 11
     }
   ],
   "widgets": [

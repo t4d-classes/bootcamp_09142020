@@ -53,7 +53,24 @@ export const App = () => {
 
     mutateAppendCar({
       variables: { car },
-      refetchQueries: [ { query: APP_QUERY } ],
+      // refetchQueries: [ { query: APP_QUERY } ],
+      optimisticResponse: {
+        appendCar: {
+          ...car,
+          id: -1,
+          __typename: 'Car',
+        },
+      },
+      // first execution of the update is the optimistic response
+      // second execution of the update is the real response
+      // update: function(store, mutationResult) {
+      update(store, mutationResult) {
+
+        const data = store.readQuery<{ cars: Car[] }>({ query: APP_QUERY });
+        data!.cars = data!.cars.concat(mutationResult?.data?.appendCar);
+        store.writeQuery({ query: APP_QUERY, data});
+
+      },
     });
   };
 
