@@ -3,6 +3,9 @@ export const typeDefs = `
     message: String
     headerText: String
     colors: [Color]
+    cars: [Car]
+    color(colorId: ID): Color
+    car(carId: ID): Car
   }
 
   type Color {
@@ -10,4 +13,13 @@ export const typeDefs = `
     name: String
     hexcode: String
   }
+
+  type Car {
+    id: ID
+    make: String
+    model: String
+    year: Int
+    color: String
+    price: Float
+  }  
 `;
