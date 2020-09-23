@@ -37,9 +37,9 @@ export function CarToolContainer() {
   const dispatch = useDispatch();
 
   const boundActions = bindActionCreators({
-    onAddCar: CarToolActions.createAppendCarAction,
-    onSaveCar: CarToolActions.createReplaceCarAction,
-    onDeleteCar: CarToolActions.createRemoveCarAction,
+    onAddCar: CarToolActions.appendCar,
+    onSaveCar: CarToolActions.replaceCar,
+    onDeleteCar: CarToolActions.removeCar,
     onEditCar: CarToolActions.createEditCarAction,
     onCancelCar: CarToolActions.createCancelCarAction,
     onSortCars: CarToolActions.createSortCarsAction,

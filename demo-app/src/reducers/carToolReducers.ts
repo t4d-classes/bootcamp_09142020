@@ -5,14 +5,8 @@ import { CarsSort } from '../models/CarTool';
 import { CarToolState } from '../models/CarToolState';
 
 import {
-  REFRESH_CARS_DONE_ACTION, isRefreshCarsDoneAction, RefreshCarsDoneAction,
-  EDIT_CAR_ACTION, isExistingCarAction, isNewCarAction,
-  REMOVE_CAR_ACTION, isCarAction, APPEND_CAR_ACTION, REPLACE_CAR_ACTION, isSortCarsAction
-} from '../actions/carToolActions';
-
-import {
-  SortCarsAction, NewCarAction, ExistingCarAction,
-  CarIdAction, CarAction, isCarIdAction,
+  isRefreshCarsDoneAction, RefreshCarsDoneAction, SortCarsAction, EditCarAction,
+  isSortCarsAction, isEditCarAction, isCancelCarAction, CancelCarAction,
 } from '../actions/carToolActions';
 
 export const carsSortReducer: Reducer<CarsSort, SortCarsAction> = (carsSort = { col:'id', dir: 'inc' }, action) => {
@@ -36,28 +30,22 @@ export const carsSortReducer: Reducer<CarsSort, SortCarsAction> = (carsSort = { 
   return carsSort;
 };
 
-type EditCarIdReducerActions = NewCarAction | ExistingCarAction | CarIdAction | CarAction;
+type EditCarIdReducerActions = RefreshCarsDoneAction | EditCarAction | CancelCarAction;
 
 export const editCarIdReducer: Reducer<number, EditCarIdReducerActions> = (editCarId = -1, action) => {
 
-  if (isCarIdAction(action)) {
-    if (action.type === EDIT_CAR_ACTION) {
-      return action.payload.carId;
-    }
+  if (isEditCarAction(action)) {
+    return action.payload.carId;
+  }
 
-    if (action.type === REMOVE_CAR_ACTION) {
-      return -1;
-    }
-  } 
-
-  if (isNewCarAction(action) || isExistingCarAction(action) || isCarAction(action)) {
+  if (isRefreshCarsDoneAction(action) || isCancelCarAction(action)) {
     return -1;
   }
 
   return editCarId;
 }
 
-type CarsReducerActions = RefreshCarsDoneAction | NewCarAction | ExistingCarAction | CarIdAction;
+type CarsReducerActions = RefreshCarsDoneAction;
 
 export const carsReducer: Reducer<Car[], CarsReducerActions> = (cars = [], action) => {
 
@@ -70,27 +58,6 @@ export const carsReducer: Reducer<Car[], CarsReducerActions> = (cars = [], actio
   // if (action.type === REFRESH_CARS_DONE_ACTION) {
   //   return (action as RefreshCarsDoneAction).payload.cars;
   // }
-
-  if (isNewCarAction(action) && action.type === APPEND_CAR_ACTION) {
-    return [
-      ...cars,
-      {
-        ...action.payload.car,
-        id: Math.max(...cars.map(c => c.id), 0) + 1,
-      },
-    ];
-  }
-
-  if (isExistingCarAction(action) && action.type === REPLACE_CAR_ACTION) {
-    const carIndex = cars.findIndex(c => c.id === action.payload.car.id);
-    const newCars = cars.concat();
-    newCars[carIndex] = action.payload.car;
-    return newCars
-  }
-
-  if (isCarIdAction(action) && action.type === REMOVE_CAR_ACTION) {
-    return cars.filter(c => c.id !== action.payload.carId);
-  }
 
   return cars;
 };

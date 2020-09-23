@@ -5,9 +5,9 @@ import { Car, NewCar, CarKeys } from '../models/Car';
 export const REFRESH_CARS_REQUEST_ACTION = 'REFRESH_CARS_REQUEST';
 export const REFRESH_CARS_DONE_ACTION = 'REFRESH_CARS_DONE';
 
-export const APPEND_CAR_ACTION = 'APPEND_CAR';
-export const REPLACE_CAR_ACTION = 'REPLACE_CAR';
-export const REMOVE_CAR_ACTION = 'REMOVE_CAR';
+export const APPEND_CAR_REQUEST_ACTION = 'APPEND_CAR_REQUEST';
+export const REPLACE_CAR_REQUEST_ACTION = 'REPLACE_CAR_REQUEST';
+export const REMOVE_CAR_REQUEST_ACTION = 'REMOVE_CAR_REQUEST';
 export const EDIT_CAR_ACTION = 'EDIT_CAR';
 export const CANCEL_CAR_ACTION = 'CANCEL_CAR';
 export const SORT_CARS_ACTION = 'SORT_CARS';
@@ -24,11 +24,11 @@ export type CreateRefreshCarsRequestAction = () => RefreshCarsRequestAction;
 export type CreateRefreshCarsDoneAction = (cars: Car[]) => RefreshCarsDoneAction;
 
 export function isRefreshCarsRequestAction(action: Action<string>): action is RefreshCarsRequestAction {
-  return [ REFRESH_CARS_REQUEST_ACTION ].includes(action.type);
+  return REFRESH_CARS_REQUEST_ACTION === action.type;
 }
 
 export function isRefreshCarsDoneAction(action: Action<string>): action is RefreshCarsDoneAction {
-  return [ REFRESH_CARS_DONE_ACTION ].includes(action.type);
+  return REFRESH_CARS_DONE_ACTION === action.type;
 }
 
 export const createRefreshCarsRequestAction: CreateRefreshCarsRequestAction = () => ({
@@ -51,79 +51,136 @@ export const refreshCars = () => {
 
 };
 
-
-
 // End Refresh Cars Action
 
 // New Car Action
 
-export interface NewCarAction extends Action<string> {
+export interface AppendCarRequestAction extends Action<string> {
   payload: { car: NewCar }
 }
 
-export type CreateNewCarAction = (car: NewCar) => NewCarAction
+export type CreateAppendCarRequestAction = (car: NewCar) => AppendCarRequestAction
 
-export function isNewCarAction(action: Action<string>): action is NewCarAction {
-  return [ APPEND_CAR_ACTION ].includes(action.type);
+export function isAppendCarRequestAction(action: Action<string>): action is AppendCarRequestAction {
+  return APPEND_CAR_REQUEST_ACTION === action.type;
 }
 
-export const createAppendCarAction: CreateNewCarAction = (car) => ({
-  type: APPEND_CAR_ACTION, payload: { car },
+export const createAppendCarRequestAction: CreateAppendCarRequestAction = (car) => ({
+  type: APPEND_CAR_REQUEST_ACTION, payload: { car },
 });
+
+export const appendCar = (car: NewCar) => {
+
+  return async (dispatch: Dispatch) => {
+    dispatch(createAppendCarRequestAction(car));
+    await fetch('http://localhost:3060/cars', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(car),
+    });
+    refreshCars()(dispatch);
+  };
+
+};
 
 // End New Car Action
 
 // Existing Car Action
 
-export interface ExistingCarAction extends Action<string> {
+export interface ReplaceCarRequestAction extends Action<string> {
   payload: { car: Car }
 }
 
-export type CreateExistingCarAction = (car: Car) => ExistingCarAction
+export type CreateReplaceCarRequestAction = (car: Car) => ReplaceCarRequestAction
 
-export function isExistingCarAction(action: Action<string>): action is ExistingCarAction {
-  return [ REPLACE_CAR_ACTION ].includes(action.type);
+export function isReplaceCarRequestAction(action: Action<string>): action is ReplaceCarRequestAction {
+  return REPLACE_CAR_REQUEST_ACTION === action.type;
 }
 
-export const createReplaceCarAction: CreateExistingCarAction = (car) => ({
-  type: REPLACE_CAR_ACTION, payload: { car },
+export const createReplaceCarRequestAction: CreateReplaceCarRequestAction = (car) => ({
+  type: REPLACE_CAR_REQUEST_ACTION, payload: { car },
 });
+
+export const replaceCar = (car: Car) => {
+
+  return async (dispatch: Dispatch) => {
+    dispatch(createReplaceCarRequestAction(car));
+    await fetch('http://localhost:3060/cars/' + encodeURIComponent(car.id), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(car),
+    });
+    refreshCars()(dispatch);
+  };
+
+};
+
 
 // End Existing Car Action
 
-// Car Id Action
+// Remove Car Action
 
-export interface CarIdAction extends Action<string> {
+export interface RemoveCarRequestAction extends Action<string> {
   payload: { carId: number }
 }
 
-export type CreateCarIdAction = (carId: number) => CarIdAction
+export type CreateRemoveCarRequestAction = (carId: number) => RemoveCarRequestAction
 
-export function isCarIdAction(action: Action<string>): action is CarIdAction {
-  return [ REMOVE_CAR_ACTION, EDIT_CAR_ACTION ].includes(action.type);
+export function isRemoveCarRequestAction(action: Action<string>): action is RemoveCarRequestAction {
+  return action.type === REMOVE_CAR_REQUEST_ACTION;
 }
 
-export const createRemoveCarAction: CreateCarIdAction = (carId) => ({
-  type: REMOVE_CAR_ACTION, payload: { carId },
+export const createRemoveCarRequestAction: CreateRemoveCarRequestAction = (carId) => ({
+  type: REMOVE_CAR_REQUEST_ACTION, payload: { carId },
 });
 
-export const createEditCarAction: CreateCarIdAction = (carId) => ({
+
+export const removeCar = (carId: number) => {
+
+  return async (dispatch: Dispatch) => {
+    dispatch(createRemoveCarRequestAction(carId));
+    await fetch('http://localhost:3060/cars/' + encodeURIComponent(carId), {
+      method: 'DELETE',
+    });
+    refreshCars()(dispatch);
+  };
+
+};
+
+
+// End Remove Action
+
+// Edit Car Action
+
+export interface EditCarAction extends Action<string> {
+  payload: { carId: number }
+}
+
+export type CreateEditCarAction = (carId: number) => EditCarAction
+
+export function isEditCarAction(action: Action<string>): action is EditCarAction {
+  return action.type === EDIT_CAR_ACTION;
+}
+
+
+export const createEditCarAction: CreateEditCarAction = (carId) => ({
   type: EDIT_CAR_ACTION, payload: { carId },
 });
 
-// End Car Id Action
+// End Edit Car Car
+
 
 // Car Action
 
-export type CarAction = Action<string>;
+export type CancelCarAction = Action<string>;
 
-export type CreateCarAction = () => CarAction
+export type CreateCancelCarAction = () => CancelCarAction
 
-export function isCarAction(action: Action<string>): action is CarAction {
-  return [ CANCEL_CAR_ACTION ].includes(action.type);
+export function isCancelCarAction(action: Action<string>): action is CancelCarAction {
+  return action.type === CANCEL_CAR_ACTION;
 }
 
-export const createCancelCarAction: CreateCarAction = () => ({
+export const createCancelCarAction: CreateCancelCarAction = () => ({
   type: CANCEL_CAR_ACTION,
 });
 
@@ -138,7 +195,7 @@ export interface SortCarsAction extends Action<string> {
 export type CreateSortCarsAction = (col: CarKeys) => SortCarsAction
 
 export function isSortCarsAction(action: Action<string>): action is SortCarsAction {
-  return [ SORT_CARS_ACTION ].includes(action.type);
+  return action.type === SORT_CARS_ACTION;
 }
 
 export const createSortCarsAction: CreateSortCarsAction = (col: CarKeys) => ({
