@@ -1,0 +1,7 @@
+Exercise 5
+
+1. Display a history of calculator operations under the calculator buttons. For each history entry display the operation name ('Add', 'Subtract', etc...) and the operation value.
+
+2. Add a new button labeled 'Clear' which will clear the history, set the result to 0, and set the numInput to 0. Do not move the numInput to Redux.
+
+3. Ensure it works. Good luck! Bon chance!

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+    <script>
+
+      // const outer = () => {
+
+      //   let t = 2;
+
+      //   setTimeout(() => {
+      //     t = 4;
+      //   }, 2000);
+
+      //   return () => {
+      //     console.log(t);
+      //   };
+
+      // };
+
+      // const inner = outer();
+
+      // inner();
+
+      // setTimeout(() => {
+      //   inner();
+      // }, 4000);
+
+      // console.dir(inner);
+
+      // setTimeout(() => {
+      //   console.log('a');
+      // }, 2000);
+
+      // console.log('b');
+
+      // setTimeout(() => {
+      //     console.log('a');
+      //     setTimeout(() => {
+      //         console.log('b');
+      //         setTimeout(() => {
+      //             console.log('c');
+      //         }, 500);
+      //     }, 1000);
+      // }, 2000);
+
+      // let counter = 0;
+
+      // counter++;
+      // setTimeout(() => {
+      //   console.log('a');
+      //   counter--;
+      //   if (counter === 0) {
+      //     allDone();
+      //   }
+      // }, 2000);
+
+      // counter++;
+      // setTimeout(() => {
+      //   console.log('b');
+      //   counter--;
+      //   if (counter === 0) {
+      //     allDone();
+      //   }
+      // }, 1000);
+
+      // counter++;
+      // setTimeout(() => {
+      //   console.log('c');
+      //   counter--;
+      //   if (counter === 0) {
+      //     allDone();
+      //   }
+      // }, 500);
+
+      // function allDone() {
+      //   console.log('all done');
+      // }
+
+      // Mini-Lab - Add additional code which will run the 'allDone' function after all three setTimeouts have expired. All three setTimeouts must be launched in the same task, and you cannot simply wrap 'allDone' in a setTimeout with delay higher than the others
+
+      // const youngMan = new Promise(function youngLady(resolve, reject) {
+
+      //   setTimeout(() => {
+      //     console.log('she says yes');
+      //     resolve('she is madly in love with young man...');
+      //   }, 2000);
+
+      // });
+
+      // youngMan
+      //   .then((result) => {
+      //     console.log(result);
+      //     console.log('yay, she said yes!');
+
+      //     console.log('find a place to tie the knot...');
+      //     return new Promise((resolve, reject) => {
+      //       setTimeout(() => {
+      //         resolve('found an organic, free trade, gluten free, grassfed, free range, locally & sustainably sourced, farm-to-table lavender farm...');
+      //       }, 2000)
+      //     });
+      //   })
+      //   .then(result => {
+      //     console.log(result);
+
+      //     console.log('find some wedding clothes...');
+      //     return new Promise(resolve => {
+      //       setTimeout(() => {
+      //         resolve('found tux and a dress...');
+      //       }, 2000)
+      //     });          
+      //   })
+      //   .then((result) => {
+      //     console.log(result);
+      //   })
+      //   .catch((result) => {
+      //     console.log(result);
+      //     console.log('she says no, time to signup for eHarmony to find a more compatible match...');
+      //   });
+
+      // console.log('young man is waiting');
+
+      // const xhr = new XMLHttpRequest();
+
+      // xhr.addEventListener('readystatechange', () => {
+
+      //   if (xhr.status < 400 && xhr.readyState === 4) {
+      //     console.log(JSON.parse(xhr.responseText));
+      //   }
+
+      // });
+
+      // xhr.open('POST', 'http://localhost:3050/cars');
+      // xhr.setRequestHeader('Content-Type', 'application/json');
+      // xhr.send(JSON.stringify({ make: 'Tesla', model: 'Roadster', price: 1, color: 'red', year: 2020 }));
+
+      // Lab Exercise:
+
+      // Upgrade the API call below using Promises and XHR code above, please implement the API call
+      // exactly as listed
+
+      // myFetch('http://localhost:3050/cars', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': 'somevalue',
+      //   }, // be sure to support multiple headers
+      //   body: JSON.stringify({ make: 'Tesla', model: 'Roadster', price: 1, color: 'red', year: 2020 }),
+      // }).then( (car /* car object */) => console.log(car));
+
+      // Lab Exercise:
+
+      // Using myFetch, and sequentially get all of cars, add a car, get all of the cars, delete a car, get all of the cars
+      // after each call, output the result to the console
+
+      // if needed, update myFetch
+
+      // const p1 = new Promise(resolve => setTimeout(() => resolve('a'), 2000));
+      // const p2 = new Promise(resolve => setTimeout(() => resolve('b'), 4000));
+      // const p3 = new Promise((resolve, reject) => setTimeout(() => reject('c'), 6000));
+      // const p4 = new Promise(resolve => setTimeout(() => resolve('d'), 8000));
+
+      // p1.then(result => console.log(result));
+      // p2.then(result => console.log(result));
+      // p3.then(result => console.log(result)).catch(result => console.log('rejected: ', result));
+      // p4.then(result => console.log(result));
+
+      // const p5 = Promise.all([p1, p2]);
+
+      // p5.then(result => console.log('chris wants to use you: ', result));
+
+      // Promise.all([p5, p3, p4]).then(results => {
+      //   console.log(results);
+      //   console.log('all done');
+      // }).catch(result => {
+      //   console.log(result);
+      //   console.log('one failed!');
+      // });
+
+      // const getAllCars = async () => {
+
+      //   const res = await fetch('http://localhost:3050/cars');
+      //   const cars = await res.json();
+
+      //   return cars;
+      // };
+
+      // getAllCars().then(cars => console.log(cars));
+      
+      // function* getNums() {
+
+      //   console.log('get nums 1');
+      //   yield 1;
+      //   console.log('get nums 2');
+      //   yield 2;
+      //   console.log('get nums 3');
+      //   yield 3;
+
+      // }
+
+      // const theNums = getNums();
+      // console.dir(theNums);
+
+      // console.log(theNums.next());
+      // console.log(theNums.next());
+      // console.log(theNums.next());
+
+      // for (let num of getNums()) {
+
+      //   console.log('in for loop');
+      //   console.log(num);
+
+
+      // } 
+
+
+
+    </script>
+  </body>
+</html>

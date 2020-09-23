@@ -1,0 +1,9 @@
+Exercise 6
+
+1. Upgrade Car Tool to use Redux for Managing Application State.
+
+2. Ensure it works.
+
+Challenge
+
+1. Implement the ability for Car Table to be sorted by the column header you click on.

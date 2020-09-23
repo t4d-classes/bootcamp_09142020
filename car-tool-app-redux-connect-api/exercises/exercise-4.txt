@@ -1,0 +1,7 @@
+Exercise 4
+
+1. In the `index.js` file, create a new component named CalcTool using the design on the board.
+
+2. Connect CalcTool to Redux.
+
+3. Good luck!

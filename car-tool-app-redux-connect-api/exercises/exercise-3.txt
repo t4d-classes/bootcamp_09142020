@@ -1,0 +1,7 @@
+Exercise 3
+
+1. Implement save and cancel. After saving or canceling, show the view car row.
+
+2. After adding or deleting a car, if a car row is being edited, change it to view row (discarding the changes).
+
+3. Ensure it works.

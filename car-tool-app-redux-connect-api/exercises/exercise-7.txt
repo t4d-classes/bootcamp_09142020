@@ -1,0 +1,9 @@
+Exercise 7
+
+1. Implement add car, save car and delete car using the REST service, fetch and Redux thunk. After adding, saving or deleting, refresh the table of cars.
+
+2. Above the table, add a "Refresh Cars" button. When the button is clicked, refresh the cars from the REST service.
+
+3. Remove unneeded code from the previous array based implementation.
+
+4. Good luck! I believe you! You can do this! I am very proud of you all!

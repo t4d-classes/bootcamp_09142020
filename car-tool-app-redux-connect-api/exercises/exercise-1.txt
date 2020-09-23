@@ -1,0 +1,13 @@
+Exercise 1
+
+1. Add a column to the table of cars. The column should have a column header text of 'Actions'.
+
+2. Create a new component named View Car Row (please pay attention to the singular name of the component). Move the table row for displaying a car to the View Car Row component. Use the View Car Row component in Car Table.
+
+3. Add a column to View Car Row, in the column place a button labeled with Delete.
+
+4. When the Delete button is clicked, remove the Car from the table.
+
+Consider using the array filter function to perform the delete. Filter works similar to map.
+
+5. Ensure it works.
