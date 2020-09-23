@@ -48,6 +48,14 @@
       "color": "c",
       "price": 0,
       "id": 5
+    },
+    {
+      "make": "D",
+      "model": "H",
+      "year": 2030,
+      "color": "red",
+      "price": 23400,
+      "id": 6
     }
   ],
   "widgets": [

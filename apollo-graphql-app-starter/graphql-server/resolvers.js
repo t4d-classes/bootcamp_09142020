@@ -21,4 +21,23 @@ export const resolvers = {
         .then(res => res.json());
     },
   },
+  Mutation: {
+    appendCar: async (_, args, context) => {
+
+      const res = await fetch(`${context.restURL}/cars`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(args.car),
+      });
+
+      const appendedCar = await res.json();
+
+      const res2 = await fetch(`${context.restURL}/cars/${encodeURIComponent(appendedCar.id)}`);
+
+      const car = await res2.json();
+
+      return car;
+
+    },
+  },
 };
