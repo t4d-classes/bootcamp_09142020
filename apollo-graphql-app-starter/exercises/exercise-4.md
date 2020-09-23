@@ -1,9 +1,5 @@
 # Exercise 4
 
-1. Implement the Append Color mutation.
+1. Implement a delete button for the Car Table. Use the same approach as we did in Car Tool. Place button in a new column on each car data row.
 
-2. Implement the Remove Color and Car mutation.
-
-3. Verify all mutations in the GraphQL Playground.
-
-4. Ensure it works.
+2. Ensure it works!

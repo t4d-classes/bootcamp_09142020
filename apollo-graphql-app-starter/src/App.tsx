@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { useQuery } from 'react-apollo';
+import { useQuery, useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Car} from './models/car';
+import { Car, NewCar } from './models/car';
+import { CarForm } from './components/CarForm';
 
 const APP_QUERY = gql`
   query AppQuery {
@@ -12,6 +13,19 @@ const APP_QUERY = gql`
       name
     }
     cars {
+      id
+      make
+      model
+      year
+      color
+      price
+    }
+  }
+`;
+
+const APPEND_CAR_MUTATION = gql`
+  mutation AppendCar($car: AppendCar) {
+    appendCar(car: $car) {
       id
       make
       model
@@ -32,6 +46,16 @@ export type AppQueryData = {
 
 export const App = () => {
   const { loading, data, error } = useQuery<AppQueryData>(APP_QUERY);
+
+  const [ mutateAppendCar ] = useMutation(APPEND_CAR_MUTATION);
+
+  const appendCar = (car: NewCar) => {
+
+    mutateAppendCar({
+      variables: { car },
+      refetchQueries: [ { query: APP_QUERY } ],
+    });
+  };
 
   if (loading) {
     return <div>Loading!</div>;
@@ -68,5 +92,6 @@ return <>
         </tr>)}
       </tbody>
     </table>
+    <CarForm buttonText="Add Car" onSubmitCar={appendCar} />
   </>;
 };

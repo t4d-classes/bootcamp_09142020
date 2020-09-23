@@ -56,6 +56,14 @@
       "color": "red",
       "price": 23400,
       "id": 6
+    },
+    {
+      "make": "w",
+      "model": "w",
+      "year": 1900,
+      "color": "w",
+      "price": 0,
+      "id": 7
     }
   ],
   "widgets": [
