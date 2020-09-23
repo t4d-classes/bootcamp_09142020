@@ -1,0 +1,37 @@
+{
+  "colors": [
+    {
+      "id": 1,
+      "name": "red",
+      "hexcode": "#ff0000"
+    },
+    {
+      "id": 2,
+      "name": "green",
+      "hexcode": "#00ff00"
+    },
+    {
+      "id": 3,
+      "name": "blue",
+      "hexcode": "#0000ff"
+    }
+  ],
+  "cars": [
+    {
+      "make": "Ford",
+      "model": "Fusion Hybrid",
+      "year": 2019,
+      "color": "blue",
+      "price": 45004,
+      "id": 1
+    },
+    {
+      "make": "Tesla",
+      "model": "S",
+      "year": 2018,
+      "color": "red",
+      "price": 1000011,
+      "id": 2
+    }
+  ]
+}
