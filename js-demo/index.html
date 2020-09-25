@@ -7,240 +7,112 @@
 
   <body>
     <!-- <script>
+      "use strict";
 
-      const outer = () => {
+      // call-site this
+      function doIt() {
+        console.log(this);
 
-        let t = 2;
+        // const that = this;
 
-        setTimeout(() => {
-          t = 4;
-        }, 2000);
+        //function inner() {
+        //  console.log(that);
+        //}
 
-        return () => {
-          console.log(t);
+        // lexical-this
+        const inner = () => {
+          console.log(this);
         };
 
-      };
-
-      const inner = outer();
-
-      inner();
-
-      setTimeout(() => {
         inner();
-      }, 4000);
+      }
 
-      // console.dir(inner);
+      // doIt();
 
+      // window.doIt();
+
+      const o = {
+        id: 2,
+        doIt: doIt,
+      };
+
+      o.doIt();
+
+      // console.log(o.doIt === window.doIt);
     </script> -->
+
     <!-- <script>
+      "use strict";
 
-      setTimeout(() => {
+      const parent = {
+        name: "parent",
+        amt: 1000,
+        getName() {
+          console.log(this);
+          return console.log(String(this.name).toUpperCase());
+        },
+      };
 
-        console.log('a');
+      const child1 = Object.create(parent);
+      child1.name = "child1";
 
-      }, 0)
+      const child2 = Object.create(parent);
+      child2.name = "child2";
 
-      console.log('b');
+      /*
+      console.log(child1.getName());
+      console.log(child2.getName());
 
+      console.log(child1.getName === child2.getName);
+
+      console.log(child1);
+      */
+
+      setTimeout(function () {
+        child1.getName();
+      }, 3000);
+
+      /*
+      console.log(child.amt);
+      console.log(child);
+
+      child.amt = 2000;
+
+      console.log(child.amt);
+      console.log(child);
+
+      delete child.amt;
+
+      console.log(child.amt);
+      console.log(child);
+      */
     </script> -->
-    <script>
-
-      const delay = () => Math.floor(Math.random() * 1000) + 500;
-
-      /*
-      setTimeout(() => {
-          console.log('a');
-          setTimeout(() => {
-              console.log('b');
-              setTimeout(() => {
-                  console.log('c');
-              }, delay());
-          }, delay());
-      }, delay());
-      */
-
-      /*
-      let counter = 0;
-
-      const allDone = () => {
-        console.log('all done');
-      }
-
-      counter++;
-      setTimeout(() => {
-        console.log('a');
-        counter--;
-        if (counter === 0) {
-          allDone();
-        }
-      }, delay());
-
-      counter++;
-      setTimeout(() => {
-        console.log('b');
-        counter--;
-        if (counter === 0) {
-          allDone();
-        }
-      }, delay());
-
-      counter++;
-      setTimeout(() => {
-        console.log('c');
-        counter--;
-        if (counter === 0) {
-          allDone();
-        }
-      }, delay());
-      */
-
-      // Objective: when all three callback finish, run the all done function
-      // Rules:
-      // 1. You cannot change the delay value or how its calculated
-      // 2. You cannot use promises
-      // 3. You cannot wrap the allDone in its own high delay setTimeout
-      // 4. All three calls to setTimeout must be done in the same task
-
-      // create a folder named 'js-demo'
-      // create an index.html file, and copy this code into it
-      // run it with 'npx serve .' from a terminal window in the js-demo folder
-
-
-    </script>
 
     <script>
+      const parent = {
+        name: "parent",
+        amt: 1000,
+        getName() {
+          console.log(this);
+          return console.log(String(this.name).toUpperCase());
+        },
+      };
 
-      /*
-      class Promise {
+      const child1 = Object.create(parent);
+      child1.name = "child1";
 
-        constructor(asyncFn) {
+      const child2 = Object.create(parent);
+      child2.name = "child2";
 
-          this._resolveFns = [];
-
-          this._rejectFns = [];
-
-          const resolveFn = (data) =>
-            this._resolveFns.forEach(fn => fn(data));
-          const rejectFn = (data) =>
-            this._rejectFns.forEach(fn => fn(data));
-
-          asyncFn(resolveFn, rejectFn);
-
-        }
-
-        then(fn) {
-          this._resolveFns.push(fn);
-        }
-
-        catch(fn) {
-          this._rejectFns.push(fn);
-        }
+      function myBind(func, context) {
+        return function (...params) {
+          func.call(context, ...params);
+        };
       }
-      */
 
-      /*
-      console.log('let\'s create a promise!');
+      child1.getName = myBind(child1.getName, child1);
 
-      const p = new Promise((resolve, reject) => {
-
-        console.log('call setTimeout');
-
-        setTimeout(() => {
-          console.log('call reject');
-          reject('some data');
-        }, 2000);
-
-      });
-
-      p
-        .then((data) => {
-          console.log(data);
-          console.log('all done');
-        })
-        .then()
-        .catch(data =>
-          console.log('something went wrong: ', data));
-
-      console.log('made it here...');
-
-      */
-      /*
-      const myFetch = (url) => {
-
-        return new Promise(resolve => {
-
-          const xhr = new XMLHttpRequest();
-
-          xhr.addEventListener('readystatechange', () => {
-            if (xhr.status === 200 && xhr.readyState === 4) {
-              resolve(JSON.parse(xhr.responseText));
-            }
-          });
-    
-          xhr.open('GET', url);
-          xhr.send();
-
-        });
-
-      };
-      */
-
-      // Lab Exercise
-
-      // implement the myFetch function so the following api call works correctly
-      // use the XHR code above to help implement the myFetch function
-      // myFetch('https://t4d-class-rest-api.herokuapp.com/cars').then(cars => console.log(cars));
-
-      // fetch('https://t4d-class-rest-api.herokuapp.com/cars')
-      //  .then(res => res.json())
-      //  .then(cars => console.log(cars));
-
-      /*
-      const p1 = new Promise(resolve => setTimeout(() => resolve('a'), delay()));
-      const p2 = new Promise((resolve, reject) => setTimeout(() => reject('b'), delay()));
-      const p3 = new Promise(resolve => setTimeout(() => resolve('c'), delay()));
-
-      p1.then(result => console.log(result + ' resolved'));
-      p2.then(result => console.log(result + ' resolved')).catch(result => console.log(result + ' was rejected'));
-      p3.then(result => console.log(result + ' resolved'));
-
-      Promise.all([p1,p2,p3])
-        .then(result => {
-          console.log(result);
-          console.log('all done');
-        })
-        .catch(result => {
-          console.log(result);
-          console.log('one was rejected');
-        })
-        .finally(() => {
-          console.log('run regardless of the promise outcome');
-        });
-
-      */
-      /*
-      const getCars = () => {
-        return fetch('https://t4d-class-rest-api.herokuapp.com/cars')
-          .then(res => res.json());
-      };
-      */
-
-      const getCars = async () => {
-        const res = await Promise.all([
-          fetch('https://t4d-class-rest-api.herokuapp.com/cars'),
-          fetch('https://t4d-class-rest-api.herokuapp.com/colors'),
-        ]);
-        const cars = await res.json();
-
-        return cars;
-      };
-
-      getCars().then(cars => console.log(cars));
-
-      
-
+      setTimeout(child1.getName, 2000);
     </script>
-
   </body>
 </html>

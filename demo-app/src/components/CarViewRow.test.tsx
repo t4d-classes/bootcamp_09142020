@@ -1,28 +1,24 @@
-import * as React from 'react';
-import {
-  render, mount, shallow,
-  ReactWrapper, ShallowWrapper,
-} from 'enzyme';
+import * as React from "react";
+import { render, mount, shallow, ReactWrapper, ShallowWrapper } from "enzyme";
 
-import { Car } from '../models/Car';
-import { CarViewRow } from './CarViewRow';
+import { Car } from "../models/Car";
+import { CarViewRow } from "./CarViewRow";
 
-describe('<CarViewRow /> Enzyme Static HTML', () => {
-
+describe("<CarViewRow /> Enzyme Static HTML", () => {
   let car: Car;
 
   beforeEach(() => {
     car = {
       id: 1,
-      make: 'Ford',
-      model: 'F-150',
+      make: "Ford",
+      model: "F-150",
       year: 1980,
-      color: 'red',
+      color: "red",
       price: 42000,
     };
   });
 
-  test('<CarViewRow /> renders', () => {
+  test("<CarViewRow /> renders", () => {
     const component = JSON.stringify(
       render(
         <table>
@@ -33,16 +29,15 @@ describe('<CarViewRow /> Enzyme Static HTML', () => {
               onEditCar={() => null}
             />
           </tbody>
-        </table>,
-      ).html(),
+        </table>
+      ).html()
     );
 
     expect(component).toMatchSnapshot();
   });
 });
 
-describe('<CarViewRow /> Enzyme Mock DOM', () => {
-
+describe("<CarViewRow /> Enzyme Mock DOM", () => {
   const eventHandlers = {
     deleteCar: () => null,
     editCar: () => null,
@@ -56,15 +51,15 @@ describe('<CarViewRow /> Enzyme Mock DOM', () => {
   beforeEach(() => {
     car = {
       id: 1,
-      make: 'Ford',
-      model: 'F-150',
+      make: "Ford",
+      model: "F-150",
       year: 1980,
-      color: 'red',
+      color: "red",
       price: 42000,
     };
 
-    deleteCarSpy = jest.spyOn(eventHandlers, 'deleteCar');
-    editCarSpy = jest.spyOn(eventHandlers, 'editCar');
+    deleteCarSpy = jest.spyOn(eventHandlers, "deleteCar");
+    editCarSpy = jest.spyOn(eventHandlers, "editCar");
 
     component = mount(
       <table>
@@ -75,15 +70,15 @@ describe('<CarViewRow /> Enzyme Mock DOM', () => {
             onEditCar={eventHandlers.editCar}
           />
         </tbody>
-      </table>,
+      </table>
     ).find(CarViewRow);
   });
 
-  test('<CarViewRow /> renders', () => {
-    const columns = ['id', 'make', 'model', 'year', 'color', 'price'];
+  test("<CarViewRow /> renders", () => {
+    const columns = ["id", "make", "model", "year", "color", "price"];
 
     component
-      .find('td')
+      .find("td")
       .slice(0, 6)
       .forEach((node, index) => {
         const carField = String(car[columns[index]]);
@@ -91,22 +86,20 @@ describe('<CarViewRow /> Enzyme Mock DOM', () => {
       });
   });
 
-  test('<CarViewRow /> delete car button', () => {
-    component
-      .find('button')
-      .first()
-      .simulate('click');
-    component
-      .find('button')
-      .last()
-      .simulate('click');
+  test("<CarViewRow /> edit car button", () => {
+    component.find("button").first().simulate("click");
+
+    expect(editCarSpy).toHaveBeenCalledWith(car.id);
+  });
+
+  test("<CarViewRow /> delete car button", () => {
+    component.find("button").last().simulate("click");
 
     expect(deleteCarSpy).toHaveBeenCalledWith(car.id);
-    expect(editCarSpy).toHaveBeenCalledWith(car.id);
   });
 });
 
-describe('<CarViewRow /> Shallow with Enzyme', () => {
+describe("<CarViewRow /> Shallow with Enzyme", () => {
   const eventHandlers = {
     deleteCar: () => null,
     editCar: () => null,
@@ -120,30 +113,30 @@ describe('<CarViewRow /> Shallow with Enzyme', () => {
   beforeEach(() => {
     car = {
       id: 1,
-      make: 'Ford',
-      model: 'F-150',
+      make: "Ford",
+      model: "F-150",
       year: 1980,
-      color: 'red',
+      color: "red",
       price: 42000,
     };
 
-    deleteCarSpy = jest.spyOn(eventHandlers, 'deleteCar');
-    editCarSpy = jest.spyOn(eventHandlers, 'editCar');
+    deleteCarSpy = jest.spyOn(eventHandlers, "deleteCar");
+    editCarSpy = jest.spyOn(eventHandlers, "editCar");
 
     wrapper = shallow(
       <CarViewRow
         car={car}
         onDeleteCar={eventHandlers.deleteCar}
         onEditCar={eventHandlers.editCar}
-      />,
+      />
     );
   });
 
-  test('<CarViewRow /> renders', () => {
-    const columns = ['id', 'make', 'model', 'year', 'color', 'price'];
+  test("<CarViewRow /> renders", () => {
+    const columns = ["id", "make", "model", "year", "color", "price"];
 
     wrapper
-      .find('td')
+      .find("td")
       .slice(0, 6)
       .forEach((node, index) => {
         const carField = String(car[columns[index]]);
@@ -151,17 +144,15 @@ describe('<CarViewRow /> Shallow with Enzyme', () => {
       });
   });
 
-  test('<CarViewRow /> buttons', () => {
-    wrapper
-      .find('button')
-      .first()
-      .simulate('click');
-    wrapper
-      .find('button')
-      .last()
-      .simulate('click');
+  test("<CarViewRow /> edit button", () => {
+    wrapper.find("button").first().simulate("click");
+
+    expect(editCarSpy).toHaveBeenCalledWith(car.id);
+  });
+
+  test("<CarViewRow /> delete button", () => {
+    wrapper.find("button").last().simulate("click");
 
     expect(deleteCarSpy).toHaveBeenCalledWith(car.id);
-    expect(editCarSpy).toHaveBeenCalledWith(car.id);
   });
 });

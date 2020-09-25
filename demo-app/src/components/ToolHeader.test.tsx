@@ -7,6 +7,7 @@ import {
 import { ToolHeader } from './ToolHeader';
 
 describe('<ToolHeader /> Enzyme Static HTML', () => {
+  // it
   test('<ToolHeader /> renders', () => {
     const component = JSON.stringify(
       render(<ToolHeader headerText="The Tool" />).html(),
